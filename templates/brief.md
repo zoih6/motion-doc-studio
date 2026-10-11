@@ -1,0 +1,11 @@
+# Brief — <film title>
+- Goal / message (one sentence):
+- Audience & platform: (YouTube 16:9 1920×1080 30 fps)
+- VO file & duration:
+- Language of on-screen text:
+- Style: (preset from library/style_presets.md + reference images)
+- Deliverables: final_1080p.mp4, final_720p.mp4, poster.jpg, contact.jpg (GitHub release vX.0)
+- Approvals: sample (0:00–0:xx) before full build
+- User's standing rules (verbatim):
+  -
+- Must avoid:

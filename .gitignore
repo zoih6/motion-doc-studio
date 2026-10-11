@@ -1,0 +1,9 @@
+node_modules/
+tmp/
+out/
+renders/
+segments/
+dl/
+**/tmp/
+*.part.mp4
+.ghtok
