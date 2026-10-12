@@ -19,7 +19,7 @@ The studio files (engine, tools, rules, library, vendored sound-layer) live in o
 |---|---|
 | **Claude Code** | `claude plugin marketplace add zoih6/motion-doc-studio && claude plugin install motion-doc-studio@motion-doc-studio`, **then also** Step 2 with `MDS_AGENTS=agents` (installs ffmpeg/uv/Chromium and the studio home) |
 | **Gemini CLI** | `gemini extensions install https://github.com/zoih6/motion-doc-studio`, then Step 2 |
-| **Codex CLI** | Step 2 (links the skills into `~/.agents/skills`, which Codex reads). Optional plugin: `codex plugin marketplace add zoih6/motion-doc-studio` |
+| **Codex CLI** | `codex plugin marketplace add zoih6/motion-doc-studio && codex plugin add motion-doc-studio@motion-doc-studio`, then Step 2 with `MDS_AGENTS=agents` (dependencies + studio home) |
 | **Cursor, Copilot, OpenCode, Windsurf, Cline, Amp, Kiro, Antigravity, any other agent with a shell** | Step 2 |
 | **No bash (plain Windows)** | Use WSL or Git Bash and do Step 2. Otherwise run `npx skills add zoih6/motion-doc-studio -g -y`, then `git clone --depth 1 https://github.com/zoih6/motion-doc-studio %USERPROFILE%\.motion-doc-studio` and install ffmpeg, uv and Node ≥18 |
 

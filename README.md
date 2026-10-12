@@ -33,10 +33,11 @@ Install Motion-Doc Studio by following https://raw.githubusercontent.com/zoih6/m
 | **Any (bash)** | `curl -fsSL https://raw.githubusercontent.com/zoih6/motion-doc-studio/main/install.sh \| bash` |
 | **Claude Code** | `/plugin marketplace add zoih6/motion-doc-studio` → `/plugin install motion-doc-studio@motion-doc-studio` |
 | **70+ agents (skills CLI)** | `npx skills add zoih6/motion-doc-studio` (`-g` global, `-a cursor` one agent, `--skill motion-sound-layer` one skill) |
-| **Codex CLI** | `codex plugin marketplace add zoih6/motion-doc-studio`, or the installer (→ `~/.agents/skills`) |
+| **Codex CLI** | `codex plugin marketplace add zoih6/motion-doc-studio` → `codex plugin add motion-doc-studio@motion-doc-studio` |
 | **Gemini CLI** | `gemini extensions install https://github.com/zoih6/motion-doc-studio` |
 | **Inside this repo** | `AGENTS.md` (all agents), `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/`, `.github/copilot-instructions.md` |
 
+Tested from GitHub on 2026-10-13: `install.sh`, `npx skills add`, Claude Code plugin, Codex plugin and Gemini extension all install, and the skills locate the studio.
 Installer options: `MDS_KIT=1` (build the sound library now) · `MDS_PROJECT=$PWD` · `MDS_AGENTS="claude cursor"` ·
 `MDS_HOME=…` · `MDS_UNINSTALL=1`. Dependencies: git, Node ≥18, Python ≥3.10, ffmpeg, uv. The installer sets them up.
 </details>

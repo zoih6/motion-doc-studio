@@ -37,7 +37,7 @@ and tell the user.
 Not installed yet? Follow `INSTALL.md` (one procedure for every agent). Summary:
 - **Claude Code:** `/plugin marketplace add zoih6/motion-doc-studio` → `/plugin install motion-doc-studio@motion-doc-studio`
   (skills `motion-doc-studio` + `motion-sound-layer`). Or `npx skills add zoih6/motion-doc-studio`.
-- **Codex:** `codex plugin marketplace add zoih6/motion-doc-studio`, or skills in `~/.agents/skills/` (installer).
+- **Codex:** `codex plugin marketplace add zoih6/motion-doc-studio && codex plugin add motion-doc-studio@motion-doc-studio`, or the installer (`~/.agents/skills/`).
 - **Gemini CLI:** `gemini extensions install https://github.com/zoih6/motion-doc-studio` (reads `GEMINI.md` + `skills/`).
 - **Cursor / Copilot / OpenCode / Windsurf / Cline / others:** `npx skills add zoih6/motion-doc-studio`, or
   `curl -fsSL https://raw.githubusercontent.com/zoih6/motion-doc-studio/main/install.sh | bash`.
