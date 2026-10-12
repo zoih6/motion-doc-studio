@@ -4,6 +4,14 @@
 @font-face{font-family:Amiri;src:url(kit/fonts/Amiri-Bold.ttf);font-weight:700}
 @font-face{font-family:Amiri;src:url(kit/fonts/Amiri-Regular.ttf);font-weight:400}
 @font-face{font-family:Kufi;src:url("kit/fonts/NotoKufiArabic[wght].ttf");font-weight:100 900}
+@font-face{font-family:Readex;src:url("kit/fonts/ReadexPro[HEXP,wght].ttf");font-weight:160 700}
+@font-face{font-family:Changa;src:url("kit/fonts/Changa[wght].ttf");font-weight:200 800}
+@font-face{font-family:ElMessiri;src:url("kit/fonts/ElMessiri[wght].ttf");font-weight:400 700}
+@font-face{font-family:Marhey;src:url("kit/fonts/Marhey[wght].ttf");font-weight:300 700}
+@font-face{font-family:Ruqaa;src:url(kit/fonts/ArefRuqaa-Bold.ttf);font-weight:700}
+@font-face{font-family:Lalezar;src:url(kit/fonts/Lalezar-Regular.ttf);font-weight:400}
+@font-face{font-family:Rakkas;src:url(kit/fonts/Rakkas-Regular.ttf);font-weight:400}
+@font-face{font-family:Mono;src:url(kit/fonts/IBMPlexMono-Medium.ttf);font-weight:500}
 html,body{margin:0;background:#0c0906}canvas{display:block;width:100vw;max-width:1920px}
 </style></head><body><canvas id="c" width="1920" height="1080"></canvas>
 <script>
@@ -12,11 +20,14 @@ window.FILM = {
   palette: {},              // override any of: bg ink parch cream gold goldL goldD red
   display: 'Amiri', ui: 'Kufi', typeScale: 1.3,
   fonts: ['700 60px Amiri', '400 60px Amiri', '800 60px Kufi', '600 60px Kufi'],
-  textures: {}              // {paper_cream:'kit/textures/…', bg_dark:'…'}
+  textures: {},             // {paper_cream:'kit/textures/…', bg_dark:'…'}
+  // tin: 'tear',           // default transition: 'tear' | 'cut' | any TRANS key in fx.js (whip, zoom, flash, iris, …)
+  // post: t => fxLook(t, 'film'),   // finishing chain (default = sepia grade). See library/compositing_fx.md
 };
 </script>
 <script src="core.js"></script>
 <script src="helpers.js"></script>
+<script src="fx.js"></script>   <!-- pro layer: easing/camera/type/FX/transitions (optional but recommended) -->
 <script src="scenes/demo.js"></script>
 <!-- add one file per VO section: scenes/s01.js, scenes/s02.js … (order does not matter, SHOTS are sorted) -->
 <script>init();</script>

@@ -10,7 +10,9 @@ remake or restyle one, follow it.
 1. `SKILL.md` — canonical rules and pipeline (**source of truth**; if anything conflicts, SKILL.md wins).
 2. `rules/design_rules.md`, `rules/motion_rules.md`, `rules/pitfalls.md`.
 3. Watch/inspect `examples/thuluth/` (README + contact.jpg + code) — the quality bar.
-4. Then the `workflow/` file of the step you are on.
+4. Then the `workflow/` file of the step you are on, and the `library/` file of the decision you are making
+   (easing_timing, camera_language, transitions, kinetic_typography, color_systems, compositing_fx, fonts).
+5. Reference video from the user? → `workflow/09_reference_dna.md` + `tools/video_dna.py` (learn the grammar, never copy).
 
 ## Operating mode
 - Plan → execute → verify. Use the workflow files as checklists.

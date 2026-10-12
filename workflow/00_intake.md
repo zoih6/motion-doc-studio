@@ -19,7 +19,7 @@ Example (Arabic user):
 3. أين نرفع العمل؟ ◦ مستودع GitHub جديد (أرسل رمز PAT) ◦ ملف في مساحة العمل فقط
 4. أي أصول حقيقية عندك؟ (صور، شعارات، لقطات)
 
-## Analyse references (when the user attaches images)
+## Analyse references (when the user attaches images — for VIDEOS use workflow/09_reference_dna.md)
 Write `docs/reference_analysis.md`: palette (sample hex), surfaces (paper/glass/flat), lighting (rays,
 vignette, key direction), portrait treatment, typography mood, geometry/overlays, density, what to adopt
 and what *not* to copy literally. The user wants the **style**, not a copy of the frames.

@@ -60,3 +60,7 @@ All functions are in `engine/core.js` / `engine/helpers.js`. `t` = current time,
 3. Compute geodesic distance inside each component from its start → normalise into time segments → save as an
    8-bit "order map" PNG. Dots/diacritics get late segments.
 4. At runtime: pixel alpha = ink alpha × clamp((p·255 − order)/7). Cache per p. (See examples/thuluth/code/ink3.js.)
+
+## More techniques
+The pro layer `engine/fx.js` adds 16 transitions, 8 kinetic-type modes, a 2.5D camera rig, post FX and
+graphics primitives — see library/transitions.md, kinetic_typography.md, camera_language.md, compositing_fx.md.

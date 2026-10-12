@@ -62,3 +62,16 @@ These are hard rules unless the style bible for the film explicitly overrides on
 - Escalate: scale and intensity grow towards each section's climax; the finale reprises the hook.
 - Transitions carry meaning (tear = turning a page of history; push-through = going deeper; match-cut on
   a shape = continuity).
+
+## Advanced (v1.1) — colour, type, finishing
+- **Colour:** 1 accent + 1 rare pop + 2–3 *tinted* neutrals, 60/30/10; build and check in OKLCH (`oklch()`,
+  `contrast()`), animate colours with `mixOK()` (never sRGB lerp). Colour = meaning; keep roles fixed.
+  → library/color_systems.md
+- **Type roles:** caption / emphasis (one word per line, accent colour, hand-lettered face) / display / meta
+  (mono). Max 3 faces + meta. → library/fonts.md, library/kinetic_typography.md
+- **Finishing:** one look per *register* (e.g. bright = `pop`, dark = `film`); grain always a little;
+  effects must not drop caption contrast below 4.5:1. → library/compositing_fx.md
+- **Registers:** a film may have two visual registers (e.g. bright info vs dark under-lit punchline) —
+  switch with a hard cut on the beat, never blend them.
+- **One subject, many shot sizes:** vary framing of the same character/object (wide → close-up → macro)
+  instead of adding new elements. → library/camera_language.md §4

@@ -6,7 +6,7 @@ description: >
   animation engine → critique loops → chunked render → audio mix → GitHub delivery. Use whenever a user
   asks for a motion-graphics video, animated documentary, explainer, "VOX style" piece, or wants an
   existing video remade/restyled. Works with any coding agent that can run bash, node, python, ffmpeg.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Motion-Doc Studio — canonical skill
@@ -36,7 +36,8 @@ real production in `examples/thuluth/` (3:56 Arabic documentary — watch it bef
 6. **Real, content-true, high-res assets first;** AI-generated only for gaps (portraits of historical
    people, atmospheric plates, objects). Never random/irrelevant stock. All text is typeset by us —
    never baked into generated images.
-7. **Springs, not fades.** Three motion presets per film (card / snap / soft). Banned: everything
+7. **Springs, not fades.** Fill the motion-language spec first (`library/easing_timing.md §0`): one
+   persona, one signature curve, ≤3 house springs (card / snap / soft by default), one transition family. Banned: everything
    fading in, centered title on gradient, corner labels, frame borders, glow on UI, generic particles,
    hard cuts without a motivated transition.
 8. **Pure function of t.** Seeded RNG only. No `Math.random`, `Date`, timers, CSS transitions,
@@ -66,6 +67,7 @@ real production in `examples/thuluth/` (3:56 Arabic documentary — watch it bef
 | 6 | Critique loop: stills → contact sheet → fix (≥3 rounds per section) | `docs/contact_*.jpg` | workflow/06_critique.md |
 | 7 | Sample → approval → full build → part renders → final mix → release | Release `vX.Y` | workflow/07_render_deliver.md |
 | 8 | GitHub ops, progress doc, cleanup, resume-from-zero | `docs/PROGRESS.md` | workflow/08_github_ops.md |
+| ↺ | **Reference DNA** (whenever the user sends a reference video): measure + describe its grammar, never copy it | `docs/ref_dna/` | workflow/09_reference_dna.md |
 
 ## 2 · Rules (read before designing)
 - `rules/design_rules.md` — composition, hierarchy, framing, typography, colour, density.
@@ -84,6 +86,16 @@ real production in `examples/thuluth/` (3:56 Arabic documentary — watch it bef
   portraits, objects for cutout, textures), with negative rules.
 - `library/asset_sourcing.md` — Wikimedia Commons / museum open-access recipes, licences, crops.
 - `library/user_feedback_patterns.md` — what clients actually ask for and reject (learned the hard way).
+- **Pro layer (v1.1)** — read the one matching your current decision:
+  - `library/easing_timing.md` — motion-language spec, personalities, duration/easing/spring/stagger tables.
+  - `library/camera_language.md` — 2.5D depth planes, 15 camera moves, shot sizes, composition, multi-aspect.
+  - `library/transitions.md` — 17 transitions with when/avoid, in-shot transitions, rhythm recipes, SFX pairing.
+  - `library/kinetic_typography.md` — Arabic-safe kinetic type: roles, 8 entrance modes, VO sync, 20 techniques.
+  - `library/color_systems.md` — palettes in OKLCH, 60/30/10, perceptual mixing, grading order, 10 palettes.
+  - `library/compositing_fx.md` — blend modes, grain/bloom/halation/CA/leaks/LGG grade, 8 finished LOOKS.
+  - `library/fonts.md` — 10 bundled OFL fonts by role, pairings, 20 more Arabic families (`tools/fonts.sh`).
+  - `library/resources.md` — the 2026 open-source motion ecosystem and what was distilled from each.
+- Reference DNA example: `examples/reference_dna/DNA.md` (20 s Arabic app ad → preset F in style_presets).
 
 ## 4 · Engine & tools (runnable)
 ```
@@ -92,6 +104,14 @@ engine/core.js        canvas engine: springs, paper/cards, photos, cutouts, writ
                       SHOTS/INITS registry, window.seek(t)
 engine/helpers.js     set(), plateM(), dropP(), onPiece(), nameBlock(), geoHalo(), blob(), goldify(),
                       counter(), liveText(), staggerIn(), callout()
+engine/fx.js          PRO LAYER: Penner+bezier easings, CURVE, kf(), SPRINGS, PERSONA · simplex noise/wiggle/
+                      handheld · OKLCH/mixOK/contrast · 2.5D camera cam()/layer() (dolly, truck, orbit,
+                      vertigo, rack focus, impact) · tint/outline/extrude/echo/rgbSplit/pixelate/polaroid ·
+                      post FX grain/vignette/bloom/halation/chroma/leak/fxGrade + LOOKS · kinetic type
+                      layoutWords/drawWords/voTimes/maskReveal/marker/blurSwap/weightText · graphics panel/
+                      handCircle/pathDraw/burst/sparkles/bubble/pill/cursor/ripple/sprite/phone/sticker/
+                      scatter · TRANS: whip zoom flash dip iris clock blinds push slide barn luma glitch
+                      smear band whipUp (shot.tin)
 engine/index.html     film page template (window.FILM config: palette, fonts, type scale)
 engine/scenes/demo.js 16 s demo = template for scene files
 tools/setup.sh        ffmpeg + playwright/chromium (idempotent, re-run after resets)
@@ -105,6 +125,9 @@ tools/commons.py      Commons search/download with licence → docs/CREDITS.md
 tools/cutout.sh       background removal (rembg, one process per image)
 tools/gh.sh           push / create repo / upload release assets with a PAT file
 tools/new_film.sh     scaffold a new film project (engine copy + tools + doc templates)
+tools/video_dna.py    reference video → cuts, transitions (frame counts), flashes, palette+OKLCH, loudness,
+                      onsets, contact sheets, shot keyframes, report.md (never copies the video)
+tools/fonts.sh        download OFL Arabic/Latin families from google/fonts by name
 ```
 Start a film: `tools/new_film.sh /var/tmp/<film>`. Quick check that everything works: `./tools/setup.sh && cd engine && PAGE=index.html ../tools/cs.sh demo 4 1.5 6.9 10.6 14.5`.
 

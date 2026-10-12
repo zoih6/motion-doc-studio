@@ -4,4 +4,7 @@ set -e
 command -v ffmpeg >/dev/null || { sudo apt-get update -qq >/dev/null 2>&1; sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ffmpeg >/tmp/apt.log 2>&1; }
 [ -d node_modules/playwright ] || npm i --no-audit --no-fund >/dev/null 2>&1
 ls ~/.cache/ms-playwright 2>/dev/null | grep -q chromium || { npx playwright install chromium >/dev/null 2>&1; sudo npx playwright install-deps chromium >/tmp/deps.log 2>&1 || true; }
+# python deps for analysis tools (video_dna.py needs numpy+pillow; opencv/sklearn optional, used if present)
+python3 -c "import numpy, PIL" 2>/dev/null || pip install -q numpy pillow >/dev/null 2>&1 || pip install -q --break-system-packages numpy pillow >/dev/null 2>&1 || true
+[ "$FULL" = 1 ] && { pip install -q opencv-python-headless scikit-learn >/dev/null 2>&1 || pip install -q --break-system-packages opencv-python-headless scikit-learn >/dev/null 2>&1 || true; }
 echo "setup ok: $(ffmpeg -version | head -1 | cut -c1-30), node $(node -v)"

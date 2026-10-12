@@ -38,6 +38,9 @@
 | `engine/` | محرك الرسوم (canvas) وفيلم تجريبي مدته 16 ثانية |
 | `tools/` | أدوات: التفريغ الصوتي، اللقطات الثابتة، الصور المصغّرة، الرندر المجزأ، المؤثرات، المكساج النهائي، البحث في Commons، قص الخلفية، GitHub |
 | `templates/` | البريف، وقائمة اللقطات، وملف المتابعة، ورسالة البداية |
+| `engine/fx.js` | **الطبقة الاحترافية (v1.1):** منحنيات الحركة (Penner وbezier وspring)، كاميرا 2.5D (دولي، أوربت، فيرتيغو، تغيير البؤرة، اهتزاز)، طباعة حركية عربية كلمة بكلمة متزامنة مع الصوت، تأثيرات (حبيبات، Bloom، Halation، زيغ لوني، تسرّب ضوء، تدريج لوني) و8 «لوكات» جاهزة، و16 انتقالًا (whip، zoom، flash، iris، clock، luma، glitch، smear…) |
+| `library/` (جديد) | أدلة احترافية: التوقيت والمنحنيات، لغة الكاميرا، قاموس الانتقالات، الطباعة الحركية، أنظمة الألوان (OKLCH)، الدمج والتأثيرات، الخطوط، وموارد 2026 مفتوحة المصدر |
+| `examples/reference_dna/` | تحليل «DNA» لفيديو مرجعي (إعلان عربي 20 ث): الإيقاع، الألوان، الخطوط، الحركة، الانتقالات — مع أداة `tools/video_dna.py` لتحليل أي فيديو |
 | `examples/thuluth/` | الفيلم الحقيقي كاملًا: الفيديو، وكود المشاهد، ودليل الأسلوب، والتوقيتات، والدروس |
 
 ---
@@ -65,6 +68,12 @@ PAGE=index.html python3 ../tools/render_seg.py demo 0 480               # → en
 ```
 Start a film: `tools/new_film.sh /var/tmp/my-film`.
 
+### v1.1 — pro layer
+`engine/fx.js` (easings, springs, personas, 2.5D camera rig, Arabic-safe kinetic type, post FX & LOOKS, 16
+transitions), eight new `library/` guides (timing, camera, transitions, kinetic type, colour/OKLCH,
+compositing, fonts, 2026 resources), 8 extra OFL fonts, `tools/video_dna.py` (measure a reference video's
+style DNA), `tools/fonts.sh`, preset **F · Sticker-Pop Dialect Ad**, and `examples/reference_dna/`.
+
 ### How it works
 Each frame is `render(t)` on a 1920×1080 canvas (pure function of time, seeded RNG). Playwright captures frames
 (2 sub-frames → motion blur), FFmpeg encodes 6-second chunks in fresh browsers (crash-safe on 2 GB RAM),
@@ -72,5 +81,6 @@ parts are uploaded to GitHub Releases, and one global audio mix (VO + synthesise
 produces the final 1080p/720p.
 
 ### Licence
-Code: MIT. Fonts: SIL OFL (Amiri, Noto Kufi Arabic). Example film assets: see the production repo's credits
+Code: MIT. Fonts: SIL OFL (Amiri, Noto Kufi Arabic, Readex Pro, Changa, El Messiri, Lalezar, Aref Ruqaa,
+Marhey, Rakkas, IBM Plex Mono). Example film assets: see the production repo's credits
 (public-domain/CC artefacts + AI-generated plates/portraits).
