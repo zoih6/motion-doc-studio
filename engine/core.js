@@ -201,13 +201,17 @@ function drawTear(t, t0, drawOut, seed) {
 
 // ── shots ─────────────────────────────────────────────────────────────
 const SHOTS = [], INITS = [];
-// shot: {a, b, draw(t), tin: 'tear'|'cut'}
+// shot: {a, b, draw(t), tin: 'tear'|'cut'|any key of TRANS in fx.js, tdur?}
 function render(t) {
   g = MAIN; g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = PAL.bg; g.fillRect(0, 0, W, H);
   let i = SHOTS.findIndex(s => t >= s.a && t < s.b); if (i < 0) i = t < SHOTS[0].a ? 0 : SHOTS.length - 1;
   const s = SHOTS[i]; s.draw(t); g.setTransform(1, 0, 0, 1, 0, 0);
-  if (i > 0 && (s.tin || 'tear') === 'tear' && t < s.a + TEAR) drawTear(t, s.a, () => SHOTS[i - 1].draw(t), 31 + i * 7);
-  grade(t);
+  const tin = s.tin || FILM.tin || 'tear';
+  if (i > 0 && tin === 'tear' && t < s.a + TEAR) drawTear(t, s.a, () => SHOTS[i - 1].draw(t), 31 + i * 7);
+  else if (i > 0 && tin !== 'cut' && typeof TRANS !== 'undefined' && TRANS[tin]) {          // engine/fx.js transition library
+    const T = TRANS[tin], d = s.tdur || T.dur; if (t < s.a + d) T.draw(clamp((t - s.a) / d), () => SHOTS[i - 1].draw(t), { t, i, shot: s, prev: SHOTS[i - 1] }); }
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  (FILM.post || grade)(t);   // FILM.post = (t) => fxLook(t, 'pop') … (engine/fx.js) — default = warm sepia grade
 }
 async function init() {
   const TX = Object.assign({ paper_cream: 'kit/textures/paper_cream.jpg', bg_dark: 'kit/textures/bg_dark.jpg' }, FILM.textures || {});
