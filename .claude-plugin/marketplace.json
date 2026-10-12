@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "motion-doc-studio",
+  "description": "Documentary & explainer motion-graphics films (VOX-style, cinematic, Arabic/RTL-ready) from a voice-over to a GitHub release, with a measured SOUND LAYER: real CC0 SFX + music placed from the picture's own springs, checked by QA.",
+  "owner": {
+    "name": "zoih6",
+    "url": "https://github.com/zoih6"
+  },
+  "plugins": [
+    {
+      "name": "motion-doc-studio",
+      "version": "2.0.0",
+      "source": "./",
+      "description": "Documentary & explainer motion-graphics films (VOX-style, cinematic, Arabic/RTL-ready) from a voice-over to a GitHub release, with a measured SOUND LAYER: real CC0 SFX + music placed from the picture's own springs, checked by QA.",
+      "homepage": "https://github.com/zoih6/motion-doc-studio",
+      "license": "MIT",
+      "keywords": [
+        "motion-graphics",
+        "video",
+        "animation",
+        "documentary",
+        "explainer",
+        "vox",
+        "arabic",
+        "rtl",
+        "sound-design",
+        "sfx",
+        "canvas",
+        "playwright",
+        "ffmpeg",
+        "skills"
+      ],
+      "category": "media"
+    }
+  ]
+}

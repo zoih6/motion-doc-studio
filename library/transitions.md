@@ -51,9 +51,16 @@ left — natural for RTL). The outgoing shot keeps animating during the transiti
 - **Smash cut into stillness:** loud/fast → instant silence and a static frame (use rarely).
 - **Card/footage cadence:** alternate title cards and images on the beat.
 
-## SFX pairing (tools/sfx.mjs cues)
-whip → whoosh (pitch down) · zoom → riser + thump · flash → camera click/impact · tear → paper rip ·
-glitch → digital crackle · band → swish · cut on punchline → silence or a hit. Duck the bed under VO.
+## SFX pairing (SOUND LAYER kit types, `workflow/10_sound_layer.md`)
+| Transition | Cue | Kit sound (`sfx.py browse --type …`) |
+|---|---|---|
+| whip / push / slide | `cue.move(id, when.ease(a, a + dur))` | `whoosh` or `swish` |
+| zoom / impact | `cue.move` + hero `cue.land` on the settle | `riser` peaking on `thump+tap` (punchy: `hit+boom`) |
+| flash / hard cut | `cue.cut(id, a)` | `hit`, `click`, or a planned silence |
+| tear (house RTL) | `cue.move(id, when.ease(a, a + TEAR))` | `paper` (LOOK: one event, no steady noise) |
+| glitch / rgbSplit / band | `cue.cut` or `cue.move` | `glitch` / `zap` / `swish` |
+| punchline cut | `cue.cut` + `stop_before` on the next hero | silence, then the hero |
+Never synthesize these (no `tools/sfx.mjs` hits/whooshes). The VO ducks the music automatically (`duck_db`).
 
 ## GPU pack (v1.2): 125 more transitions
 `engine/gl.js` + `engine/kit/data/gl_transitions.js` register every gl-transitions shader as `tin: 'gl:<Name>'` (e.g. `gl:Dreamy`, `gl:cube`, `gl:luma`, `gl:hexagonalize`).

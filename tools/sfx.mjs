@@ -1,3 +1,5 @@
+// LEGACY (pre-2.0). Do NOT use for hits, clicks or whooshes: the SOUND LAYER uses real CC0 recordings
+// (workflow/10_sound_layer.md). Kept for old projects and for abstract drone beds only.
 // node tools/sfx.mjs cues.json tmp/sfx.wav [duration]
 // Synthesised SFX bed: click tick pop thump stamp whoosh paper snap scratch chime + 'swell' (drone swells) + low drone.
 // cue = {t, type, gain?, pan?(-1..1), len?, pitch?}

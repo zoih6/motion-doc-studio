@@ -18,7 +18,12 @@
 
 ## Final
 - [ ] Frame count = round(VO duration × fps); duration matches the VO to the frame.
-- [ ] `ebur128` integrated −14 ±1 LUFS; true peak ≤ −1.5 dBTP; listened to start / dense part / end.
+- [ ] Sound layer (`workflow/10_sound_layer.md`): `tools/sound_layer.sh verify` OK (scripts unmodified); cues exported by
+      `tools/export_cues.mjs` (no hand-typed frames); no synthesized hits/clicks/whooshes.
+- [ ] `qa.py out/final.mp4` → 0 FAIL (loudness −14 ±1 LUFS or −18 calm, TP ≤ −1 dBTP, sync, audible, voice, music, silence,
+      picture); ≤ 2 fix rounds, cues/sounds only; warnings listed in LISTEN.md.
+- [ ] `tools/encode_release.sh` → every release encode also 0 FAIL.
+- [ ] Described `audio/qa.png` at each hero cue in words; LISTEN.md has 5 timecodes; credits list every sound + music file used.
 - [ ] Spot-check sync at 5 key words across the film (scrub the final file, not the stills).
 - [ ] 1080p ≈ 3.4 Mbps (≈100 MB per 4 min) + 720p version; `+faststart`; plays in a browser.
 - [ ] Release created with final_1080p.mp4, final_720p.mp4, poster.jpg, contact.jpg; links tested (HTTP 200).

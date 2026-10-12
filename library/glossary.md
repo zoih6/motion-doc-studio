@@ -170,7 +170,9 @@ Related dictionaries: [motion_recipes.md](motion_recipes.md) (84 named moves) ·
 | Style frame | إطار الأسلوب | one finished still that sets the look | workflow/03_style_bible.md |
 | Contact sheet | ورقة المعاينة | grid of frames for critique | `tools/cs.sh` |
 | Render | التصيير | turning the timeline into frames/video | `tools/render.mjs` |
-| Loudness (LUFS) | الجهارة | perceived audio level; house −14 LUFS | `tools/mix_final.sh` |
-| Ducking | خفض الموسيقى | music dips under VO | mix_final.sh |
-| SFX / foley | المؤثرات الصوتية | whooshes, hits, paper, ink | `tools/sfx.mjs` |
+| Loudness (LUFS) | الجهارة | perceived audio level; house −14 LUFS (calm −18) | `sound-layer/scripts/mix.py` + `qa.py` |
+| Ducking | خفض الموسيقى | music dips under VO | mix.py `duck_db` (qa.py `voice`) |
+| SFX / foley | المؤثرات الصوتية | whooshes, hits, paper, ink: real CC0 recordings only | `sfx.py kit/browse` · `engine/cues.js` |
+| Sound cue | نقطة صوت | a sound tied to a frame: cut · move · land · appear · hero | `cue.*` → `tools/export_cues.mjs` |
+| Hero hit | الضربة البطلة | one per ~4 s on a logo/reveal: thump+tap, dead stop + build | `cue.hero` |
 | Deliverables | المخرجات | final.mp4, contact.png, poster.png | workflow/07_render_deliver.md |

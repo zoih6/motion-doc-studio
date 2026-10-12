@@ -1,0 +1,29 @@
+{
+  "name": "motion-doc-studio",
+  "version": "2.0.0",
+  "description": "Documentary & explainer motion-graphics films (VOX-style, cinematic, Arabic/RTL-ready) from a voice-over to a GitHub release, with a measured SOUND LAYER: real CC0 SFX + music placed from the picture's own springs, checked by QA.",
+  "author": {
+    "name": "zoih6",
+    "url": "https://github.com/zoih6"
+  },
+  "homepage": "https://github.com/zoih6/motion-doc-studio",
+  "repository": "https://github.com/zoih6/motion-doc-studio",
+  "license": "MIT",
+  "keywords": [
+    "motion-graphics",
+    "video",
+    "animation",
+    "documentary",
+    "explainer",
+    "vox",
+    "arabic",
+    "rtl",
+    "sound-design",
+    "sfx",
+    "canvas",
+    "playwright",
+    "ffmpeg",
+    "skills"
+  ],
+  "skills": "./skills"
+}

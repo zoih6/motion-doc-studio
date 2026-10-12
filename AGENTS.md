@@ -7,7 +7,8 @@ films. When the user asks for a motion-graphics / explainer / documentary / "VOX
 remake or restyle one, follow it.
 
 ## Read order (≈15 min, do not skip)
-1. `SKILL.md` — canonical rules and pipeline (**source of truth**; if anything conflicts, SKILL.md wins).
+1. `skills/motion-doc-studio/SKILL.md` — canonical rules and pipeline (**source of truth**; if anything conflicts, it wins).
+   Sound: `skills/motion-sound-layer/SKILL.md` (+ its verbatim `PROMPT.md`) → `workflow/10_sound_layer.md`.
 2. `rules/design_rules.md`, `rules/motion_rules.md`, `rules/pitfalls.md`.
 3. Watch/inspect `examples/thuluth/` (README + contact.jpg + code) — the quality bar.
 4. Then the `workflow/` file of the step you are on, and the `library/` file of the decision you are making
@@ -17,6 +18,8 @@ remake or restyle one, follow it.
    `library/glossary.md`, `library/shot_cards_index.md` (124 shot cards), `library/icons.md`, `library/patterns.md`.
    Vendored expert originals (offline, with licences): `resources/README.md`.
 5. Reference video from the user? → `workflow/09_reference_dna.md` + `tools/video_dna.py` (learn the grammar, never copy).
+6. Sound (SFX + music + final mix) → `workflow/10_sound_layer.md`: cues from `engine/cues.js`, real CC0 recordings,
+   `vendor/opus-sound-layer` scripts **unmodified**, `qa.py` decides, the human ear checks `LISTEN.md`.
 
 ## Operating mode
 - Plan → execute → verify. Use the workflow files as checklists.
@@ -30,9 +33,14 @@ sourcing. Optional: an image-generation tool (for AI plates/portraits), faster-w
 If a tool is missing, adapt (e.g. no image generator → use only real assets + procedural drawing),
 and tell the user.
 
-## Adapting to your agent
-- Claude Code / Claude skills: this folder is a valid skill (`SKILL.md` has frontmatter). Copy it to
-  `~/.claude/skills/motion-doc-studio/`.
-- Codex / generic: keep the folder in the project root; this AGENTS.md is auto-read.
-- Cursor: `.cursor/rules/motion-doc-studio.mdc` points here. Gemini CLI: `GEMINI.md` points here.
-- Copilot: `.github/copilot-instructions.md` points here.
+## Installing / adapting to your agent
+Not installed yet? Follow `INSTALL.md` (one procedure for every agent). Summary:
+- **Claude Code:** `/plugin marketplace add zoih6/motion-doc-studio` → `/plugin install motion-doc-studio@motion-doc-studio`
+  (skills `motion-doc-studio` + `motion-sound-layer`). Or `npx skills add zoih6/motion-doc-studio`.
+- **Codex:** `codex plugin marketplace add zoih6/motion-doc-studio`, or skills in `~/.agents/skills/` (installer).
+- **Gemini CLI:** `gemini extensions install https://github.com/zoih6/motion-doc-studio` (reads `GEMINI.md` + `skills/`).
+- **Cursor / Copilot / OpenCode / Windsurf / Cline / others:** `npx skills add zoih6/motion-doc-studio`, or
+  `curl -fsSL https://raw.githubusercontent.com/zoih6/motion-doc-studio/main/install.sh | bash`.
+  Inside this repo, `.cursor/rules/motion-doc-studio.mdc` and `.github/copilot-instructions.md` point here.
+- **Anything else:** clone the repo and read this file. The skills locate the studio themselves
+  (`skills/*/scripts/studio.sh`, default home `~/.motion-doc-studio`, override with `$MDS_HOME`).

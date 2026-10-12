@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Auto-derive an SFX cue sheet from scene code, then merge hand-placed cues.
+"""LEGACY (pre-2.0): use engine/cues.js + tools/export_cues.mjs (workflow/10_sound_layer.md).
+Auto-derive an SFX cue sheet from scene code, then merge hand-placed cues.
 usage: python3 tools/cues_auto.py "scenes/*.js" extra_cues.json out_cues.json
 Detects: SHOTS a: (transition → paper tear + whoosh + thump), drawCard(..., t, T0 (paper + thump + pen scratch),
 dropP(..., t, T0 (paper + soft thump), nameBlock(..., t, T0 (pen scratch + chime).

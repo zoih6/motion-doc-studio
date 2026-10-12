@@ -1,3 +1,17 @@
-{ "name": "motion-doc-studio", "private": true, "type": "module",
-  "devDependencies": { "playwright": "^1.64.0" },
-  "scripts": { "demo:still": "cd engine && PAGE=index.html node ../tools/still.mjs 1.5 6.5 10.5 14.5" } }
+{
+  "name": "motion-doc-studio",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.64.0"
+  },
+  "scripts": {
+    "demo:still": "cd engine && PAGE=index.html node ../tools/still.mjs 1.5 6.5 10.5 14.5",
+    "selftest": "node tools/selftest.mjs",
+    "cues:demo": "cd engine && PAGE=index.html node ../tools/export_cues.mjs"
+  },
+  "version": "2.0.0",
+  "description": "Documentary & explainer motion-graphics films (VOX-style, cinematic, Arabic/RTL-ready) from a voice-over to a GitHub release, with a measured SOUND LAYER: real CC0 SFX + music placed from the picture's own springs, checked by QA.",
+  "license": "MIT",
+  "repository": "https://github.com/zoih6/motion-doc-studio"
+}

@@ -26,6 +26,15 @@ const r = await p.evaluate(async () => {
   for (const k of Object.keys(TRANS)) { try { s1.tin = k; s1.tdur = 1; render(s1.a + .5); } catch (e) { F('trans ' + k, e); } }
   [s1.tin, s1.tdur] = keep; render(1.5);
   const d = g.getImageData(960, 540, 1, 1).data; out.pixel = [...d];
+  // SOUND LAYER cue registry (engine/cues.js): demo cues + timing math
+  try {
+    out.counts.cues = CUES.length; if (!CUES.length) F('cues', 'demo registered no cues');
+    const ids = new Set(); for (const c of CUES) { if (ids.has(c.id)) F('cue id', c.id); ids.add(c.id); if (!c.sound) F('cue sound', c.id); }
+    for (const k of ['card', 'snap', 'soft']) { const w = when.spring(2, k); if (!(w.start <= w.peak && w.peak < w.land)) F('when.spring ' + k, JSON.stringify(w)); }
+    const e = when.ease(1, 2); if (e.peak !== 45) F('when.ease peak', e.peak + ' != 45 (mid of 30..60)');
+    const pth = when.path((t) => [t * 100, 0], 0, 1); if (!(pth.peak >= 0)) F('when.path', JSON.stringify(pth));
+    if (!CUES.some((c) => c.weight === 'hero')) F('cues', 'no hero in demo');
+  } catch (e) { F('cues.js', e); }
   return out; });
 await b.close();
 console.log(JSON.stringify(r.counts), 'darkPalettes', r.darkPalettes);

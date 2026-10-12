@@ -1,15 +1,19 @@
 ---
 name: motion-doc-studio
-description: >
+description: >-
   Build documentary / explainer MOTION-GRAPHICS films (VOX-style, cinematic, RTL/Arabic-ready) from a
   voice-over, end to end: brief → VO timing → treatment → style bible → real + AI assets → code-driven
-  animation engine → critique loops → chunked render → audio mix → GitHub delivery. Use whenever a user
-  asks for a motion-graphics video, animated documentary, explainer, "VOX style" piece, or wants an
-  existing video remade/restyled. Works with any coding agent that can run bash, node, python, ffmpeg.
-version: 1.2.0
+  animation engine → critique loops → chunked render → SOUND LAYER (real CC0 SFX + music placed from the
+  picture's own springs, measured by QA) → GitHub delivery. Use whenever a user asks for a motion-graphics
+  video, animated documentary, explainer, "VOX style" piece, reel, or wants an existing video remade or
+  restyled. Works with any coding agent that can run bash, node, python, ffmpeg.
+license: MIT
+metadata:
+  version: 2.0.0
+  repository: https://github.com/zoih6/motion-doc-studio
 ---
 
-# Motion-Doc Studio — canonical skill
+# Motion-Doc Studio — canonical skill (v2.0)
 
 You are a **director + motion designer + engineer** in one. The film is a *program*: every frame is
 `render(t)`, a pure function of time, drawn on a 1920×1080 canvas, captured by Playwright, encoded by
@@ -20,6 +24,15 @@ This file is the source of truth. Detailed rules live in `rules/`, step-by-step 
 `workflow/`, reusable recipes and dictionaries in `library/`, runnable code in `engine/` + `tools/`, vendored
 open-licence expert material in `resources/` (offline), and a complete
 real production in `examples/thuluth/` (3:56 Arabic documentary — watch it before your first film).
+
+**Where the files are.** Every path in this file (`rules/`, `workflow/`, `library/`, `engine/`, `tools/`,
+`vendor/`, `templates/`, `examples/`) is relative to the **studio root**. Find it once per session:
+```bash
+STUDIO=$(bash <folder of this SKILL.md>/scripts/studio.sh)   # plugin / clone / ~/.motion-doc-studio; clones it if missing
+"$STUDIO/tools/setup.sh"                                      # ffmpeg, node deps, chromium, uv (idempotent)
+```
+Sound for any film: the companion skill **`motion-sound-layer`** (`skills/motion-sound-layer/`) runs
+the SOUND LAYER prompt verbatim on top of this engine.
 
 ---
 
@@ -52,6 +65,10 @@ real production in `examples/thuluth/` (3:56 Arabic documentary — watch it bef
     (render in `/var/tmp`, delete temp files after upload) — users complain when it fills up.
 12. **Talk to the user in their language** and keep reports short: link, what changed, what was checked,
     what's next. State tool limits honestly (e.g. image generation is capped at 10 per turn).
+13. **Sound is placed and measured, never guessed.** You can't hear. Real CC0 recordings only (never
+    synthesize hits, clicks or whooshes), cues computed from the picture's own springs (`engine/cues.js`),
+    one mix by `sound-layer/scripts/mix.py`, and `qa.py` must pass (0 FAIL) on every delivered file.
+    Never edit the vendored scripts or loosen a threshold. A human does the final ear check (`LISTEN.md`).
 
 ---
 
@@ -66,6 +83,7 @@ real production in `examples/thuluth/` (3:56 Arabic documentary — watch it bef
 | 4 | Assets: real sourcing (Commons…), AI batches, processing (crop/upscale/cutout) | `assets/…`, `docs/CREDITS.md` | workflow/04_assets.md |
 | 5 | Build: engine config + one scene file per VO section | `film/index.html`, `film/scenes/*.js` | workflow/05_build.md |
 | 6 | Critique loop: stills → contact sheet → fix (≥3 rounds per section) | `docs/contact_*.jpg` | workflow/06_critique.md |
+| ♪ | **Sound layer**: cues from code → real CC0 SFX + music → mix.py → qa.py (≤2 fix rounds) → LISTEN.md | `out/final.mp4`, `audio/qa.png`, `LISTEN.md` | workflow/10_sound_layer.md |
 | 7 | Sample → approval → full build → part renders → final mix → release | Release `vX.Y` | workflow/07_render_deliver.md |
 | 8 | GitHub ops, progress doc, cleanup, resume-from-zero | `docs/PROGRESS.md` | workflow/08_github_ops.md |
 | ↺ | **Reference DNA** (whenever the user sends a reference video): measure + describe its grammar, never copy it | `docs/ref_dna/` | workflow/09_reference_dna.md |
@@ -74,7 +92,7 @@ real production in `examples/thuluth/` (3:56 Arabic documentary — watch it bef
 - `rules/design_rules.md` — composition, hierarchy, framing, typography, colour, density.
 - `rules/motion_rules.md` — springs, pacing, transitions, camera, banned list, RTL motion.
 - `rules/arabic_rtl.md` — Arabic typography & canvas pitfalls, numerals, diacritics, direction.
-- `rules/audio_rules.md` — VO priority, SFX design, ducking, loudness.
+- `rules/audio_rules.md` — VO priority, what gets a sound, sonic families, SOUND LAYER gates, loudness.
 - `rules/qa_checklist.md` — gates for every shot / section / final.
 - `rules/pitfalls.md` — every failure we hit and the fix. Skim it once per project.
 
@@ -132,14 +150,19 @@ engine/kit/fonts/     41 OFL families + fonts.css + fonts.js (FONT_REGISTRY, fon
 engine/kit/data/      palettes.js · icons_lucide.js · gl_transitions.js (vendored packs as JS globals, file://-safe)
 engine/specimens.html visual browser of all packs (fonts, palettes, icons, patterns, moves, GL transitions)
 engine/index.html     film page template (window.FILM config: palette, fonts, type scale; loads all packs)
-engine/scenes/demo.js 16 s demo = template for scene files
-tools/setup.sh        ffmpeg + playwright/chromium (idempotent, re-run after resets)
+engine/cues.js        SOUND LAYER cue registry: when.spring/ease/path → {start, peak, land} frames measured like qa.py;
+                      cue.land/move/cut/appear/hero/raw → window.CUES
+engine/scenes/demo.js 16 s demo = template for scene files (bottom: its sound cues)
+tools/setup.sh        ffmpeg + playwright/chromium + uv (idempotent, re-run after resets)
 tools/transcribe.py   VO → word timings (faster-whisper)      tools/find_word.py  word → time lookup
 tools/still.mjs       stills at given times                    tools/cs.sh         contact sheet
 tools/render.mjs      frame-exact render (2 sub-frames → motion blur)
 tools/render_seg.py   chunked, resumable part render + preview mix
-tools/cues_auto.py    SFX cue sheet from scene code (+ manual cues)   tools/sfx.mjs  synth SFX bed
-tools/mix_final.sh    one global mix, -14 LUFS, 1080p + 720p deliverables
+tools/sound_layer.sh  setup/verify/kit for film/sound-layer (upstream clone @ pinned commit, offline → vendor/)
+tools/export_cues.mjs page → window.CUES (+ audio/sound.json) → audio/cues.json in mix.py --schema format
+tools/encode_release.sh  1080p/720p release encodes (audio copied) + qa.py on each delivered file
+vendor/opus-sound-layer/ sfx.py (1,139 CC0 sounds) · mix.py (peak-aligned −14 LUFS mix) · qa.py (measured gates). MIT, UNMODIFIED
+tools/mix_final.sh    legacy VO+synth mix (pre-2.0). tools/cues_auto.py + tools/sfx.mjs: LEGACY synth SFX, not for hits/clicks/whooshes
 tools/commons.py      Commons search/download with licence → docs/CREDITS.md
 tools/cutout.sh       background removal (rembg, one process per image)
 tools/gh.sh           push / create repo / upload release assets with a PAT file
@@ -154,7 +177,10 @@ tools/specimens.mjs   regenerate library/specimens/*.jpg       tools/selftest.mj
 Start a film: `tools/new_film.sh /var/tmp/<film>`. Quick check that everything works: `./tools/setup.sh && node tools/selftest.mjs && cd engine && PAGE=index.html ../tools/cs.sh demo 4 1.5 6.9 10.6 14.5`.
 
 ## 5 · Definition of done
-- Final duration == VO duration (frames = round(dur × fps)); integrated loudness −14 ±1 LUFS, TP ≤ −1.5.
+- Final duration == VO duration (frames = round(dur × fps)).
+- `uv run sound-layer/scripts/qa.py` → 0 FAIL on `out/final.mp4` **and** on each release encode (loudness −14 ±1 LUFS
+  or −18 calm, TP ≤ −1, sync, audibility, voice clearance, picture match). What qa.png shows at each hero is written down;
+  `LISTEN.md` (5 timecodes) + credits for every sound/music file used are delivered.
 - Every section passed ≥3 critique rounds; no shot violates the density/legibility rules.
 - Deliverables on a GitHub Release: `final_1080p.mp4` (≤ ~110 MB for 4 min), `final_720p.mp4`,
   `poster.jpg`, `contact.jpg`; code + assets + docs pushed; `docs/PROGRESS.md` explains how to resume.

@@ -1,0 +1,45 @@
+{
+  "name": "motion-doc-studio",
+  "version": "2.0.0",
+  "description": "Documentary & explainer motion-graphics films (VOX-style, cinematic, Arabic/RTL-ready) from a voice-over to a GitHub release, with a measured SOUND LAYER: real CC0 SFX + music placed from the picture's own springs, checked by QA.",
+  "author": {
+    "name": "zoih6",
+    "url": "https://github.com/zoih6"
+  },
+  "homepage": "https://github.com/zoih6/motion-doc-studio",
+  "repository": "https://github.com/zoih6/motion-doc-studio",
+  "license": "MIT",
+  "keywords": [
+    "motion-graphics",
+    "video",
+    "animation",
+    "documentary",
+    "explainer",
+    "vox",
+    "arabic",
+    "rtl",
+    "sound-design",
+    "sfx",
+    "canvas",
+    "playwright",
+    "ffmpeg",
+    "skills"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Motion-Doc Studio",
+    "shortDescription": "Motion-graphics documentaries + a measured sound layer, end to end.",
+    "longDescription": "A code-driven canvas engine, 84 named moves, 125 GL transitions, 41 OFL fonts, Arabic/RTL rules, critique loops, chunked rendering, and a SOUND LAYER (real CC0 recordings, cues from the picture's springs, -14 LUFS mix, qa.py gates). Includes a full 4-minute Arabic documentary as the example.",
+    "developerName": "zoih6",
+    "category": "Media",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Make a 60-second VOX-style motion-graphics explainer from this voice-over",
+      "Add real sound effects and music to my motion video and run the sound QA"
+    ]
+  }
+}

@@ -42,8 +42,8 @@ flubber (shape morph), d3-ease, simplex-noise, lottie-web, three.js (WebGL scene
 ## Assets
 **Embedded (v1.2):** 41 OFL fonts (`engine/kit/fonts`), 1877 Lucide icons, 1000 palettes + Open Color (`engine/kit/data`), 125 GL transitions. More on demand: Fonts: Google Fonts repo (OFL) → `tools/fonts.sh`, list in library/fonts.md · Icons: Lucide (ISC),
 Tabler (MIT), Iconify sets · Images: Wikimedia Commons, museum open-access (Met, Rijksmuseum, Smithsonian,
-NYPL) → library/asset_sourcing.md · SFX: synthesize with tools/sfx.mjs, or freesound (check CC licence),
-Mixkit · Textures: own scans, Poly Haven (CC0).
+NYPL) → library/asset_sourcing.md · SFX: SOUND LAYER kit (`vendor/opus-sound-layer`, 1,139 CC0 recordings) + `sfx.py search` (Openverse CC0);
+never synthesized hits/whooshes · Music: user track or CC0 loop (Openverse/Freesound CC0), Mixkit · Textures: own scans, Poly Haven (CC0).
 
 ## Learning
 VOX "how we make" breakdowns · School of Motion 12 principles · Material 3 motion docs · Apple HIG motion ·
