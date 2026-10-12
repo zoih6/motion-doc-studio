@@ -47,9 +47,27 @@
   // 4 · end card (12 – 16): gold word, rays, slow push
   SHOTS.push({ a: 12, b: 16, draw: (t) => {
     set(null, t, 12, 16.2, { dim: .7, ray: { x: 960, y: -300, ang: 1.57, n: 6, int: .16, spread: .8 } });
-    const k = sp(t, 12.4, 'soft'), s = lerp(1.15, 1, k);
+    const k = sp(t, 12.4, 'card'), s = lerp(1.15, 1, k);   // hero = decisive stop (a 'soft' settle is too gradual to land a sound on: QA r2)
     g.save(); g.globalAlpha = clamp(k * 2); g.translate(960, 540); g.scale(s, s); g.shadowColor = 'rgba(0,0,0,.6)'; g.shadowBlur = 24; g.shadowOffsetY = 10;
     g.drawImage(P.endGold, -P.endGold.width / 2, -P.endGold.height / 2); g.restore();
     geoHalo(t, 12.8, 960, 540, 380);
   } });
 })();
+
+// ── SOUND LAYER cues (engine/cues.js) ─────────────────────────────────────────
+// Same t0 values and springs/easings as the draw() calls above, so the cue frames are computed,
+// never typed. Export: PAGE=index.html node ../tools/export_cues.mjs  → audio/cues.json
+// Real actions only. Tags: cut · move (peak speed) · land (motion stops) · appear (pops in).
+if (typeof cue !== 'undefined') {
+  const pan = (x) => +(x / 960 - 1).toFixed(2);                       // screen x → stereo position
+  cue.hero('title', when.spring(.25, 'card'), { stop_before: false, build: false, pan: pan(1340) }); // hook: no music to stop yet
+  cue.land('kicker', when.spring(.9, 'card'), { sound: 'tap', pan: pan(1340) });
+  cue.move('tear-rule', when.ease(4, 4 + TEAR), { sound: 'paper/fs-140463-packaging-paper-rub-sliding-1' }); // QA r1: page-turn masked here (1.1 dB)                   // RTL paper tear = the transition
+  [0, 3].forEach((i, n) => cue.appear('dot-' + i, when.spring(5.8 + i * .09, 'snap'), { sound: 'pop', pitch: n * 2, pan: pan(960 - 450) })); // QA r1: 3rd pop masked → 2 pops
+  cue.appear('caption', when.spring(6.6, 'card'), { sound: 'tap/fs-369710-wood-knock' }); // camera push never 'stops' in shot 2 → appear
+  cue.move('tear-list', when.ease(8, 8 + TEAR), { sound: 'paper/fs-397550-page-turn-03-wav-2' });
+  [0, 1, 2].forEach((i) => cue.move('fact-' + i, when.spring(8.9 + i * .9, 'card'), { sound: 'swish', pan: pan(1480 - i * 520) }));
+  cue.move('tear-end', when.ease(12, 12 + TEAR), { sound: 'paper/fs-397550-page-turn-03-wav-2' });
+  const end = cue.hero('end', when.spring(12.4, 'card'), { sound: 'thump/fs-133282-thump-on-carpet-2+tap' }); // thump+tap; deeper thump (QA: body 2.7 → 3.0 dB with thump-close), stop_before, build
+  cue.raw('end-rise', end.frame, { sound: 'riser', align: 'peak' });                  // a riser peaking on the hero frame
+}
