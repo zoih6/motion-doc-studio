@@ -51,3 +51,7 @@
 - **Shot ideas with frame numbers:** `library/shot_cards_index.md` → `resources/skills/shotcraft-shot-cards/`.
 - **Effect names → code:** `library/effects_dictionary.md`. Terms: `library/glossary.md`.
 - Smoke test after editing engine files: `node tools/selftest.mjs`.
+- **Sound cues as you build (v2.0):** at the bottom of each scene file, register `cue.land/move/cut/appear/hero(...)` with
+  the *same* t0 and spring/easing as the draw call (`engine/cues.js`, template: bottom of `engine/scenes/demo.js`). Real
+  actions only, one hero per ~4 s, and heroes need a decisive stop. Check with `PAGE=index.html node ../tools/export_cues.mjs`.
+  Mixing and QA come later: `workflow/10_sound_layer.md`.

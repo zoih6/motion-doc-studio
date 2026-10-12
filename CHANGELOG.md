@@ -1,5 +1,32 @@
 # Changelog
 
+## v2.0.0: Sound Layer + installable plugin/skills for every agent (2026-10-13)
+**Breaking:** the canonical skill moved from `SKILL.md` to `skills/motion-doc-studio/SKILL.md`. Old manual copies
+of the repo folder into `~/.claude/skills/` should be replaced by the installer (`install.sh`), which backs them up.
+- **SOUND LAYER** (`skills/motion-sound-layer/`): the user's SOUND LAYER prompt is kept **verbatim** in `PROMPT.md`, with notes
+  against the pinned scripts (kit size now 1,139 sounds / 19 types, hero recipe, browse/add, `appear` is checked by qa.py).
+  `workflow/10_sound_layer.md` gives the full procedure and FAIL → fix table. `rules/audio_rules.md` was rewritten. The QA checklist
+  and workflow 07 now use qa.py gates. New templates: `LISTEN.md` and `sound.json`.
+- **vendor/opus-sound-layer** (MIT, Bodila51) @ `52ac266`, byte-identical, with `opus-sound-layer.sha256` and a pin/update
+  procedure in `vendor/README.md`.
+- **engine/cues.js** (new): `when.spring/ease/path` measure `{start, peak, land}` frames the way qa.py measures video, and
+  `cue.land/move/cut/appear/hero/raw` fill `window.CUES`. `engine/index.html` loads it. `scenes/demo.js` registers 13 cues.
+  The demo's end word now uses the `card` spring, because a `soft` settle is too gradual for a measurable hero landing.
+- **tools:** `export_cues.mjs` (page → `audio/cues.json`, validation, hero spacing), `sound_layer.sh`
+  (setup = upstream clone @ pin with an offline vendored fallback, verify, kit, deps), `encode_release.sh` (1080p/720p plus qa.py on
+  each file). `setup.sh` installs uv and works from any cwd. `new_film.sh` scaffolds `vendor/`, `audio/sound.json` and `docs/LISTEN.md`.
+  `selftest.mjs` checks the cue registry. `sfx.mjs` / `cues_auto.py` / `mix_final.sh` are marked legacy.
+- **examples/demo/sound/:** real run, measured: 13 cues, 42 pass / 3 warn / 0 FAIL, −14.01 LUFS, both release encodes 0 FAIL,
+  QA rounds documented, qa.png described at each hero, plus CREDITS.md and LISTEN.md. `demo_16s.mp4` now has sound.
+- **Packaging:** Claude Code plugin + marketplace (`.claude-plugin/`, validated with `claude plugin validate`), Codex plugin
+  (`.codex-plugin/`, `.agents/plugins/marketplace.json`), Gemini CLI extension (`gemini-extension.json` + `GEMINI.md`),
+  Agent Skills layout for `npx skills add zoih6/motion-doc-studio` (2 skills discovered). `install.sh` is a universal installer
+  (clone/update, deps, symlinks into every detected agent, verify, uninstall). `INSTALL.md` is an agent-readable procedure:
+  its raw URL is the one-message install link. `skills/*/scripts/studio.sh` lets skills find or clone the studio from anywhere.
+- **Docs:** new bilingual README (install message, per-agent table, layout tree). AGENTS.md, CLAUDE.md, GEMINI.md, Cursor and
+  Copilot pointers were updated, as were the kickoff prompt, glossary (sound terms), transitions SFX table (kit types) and resources.
+- CI: `.github/workflows/validate.yml` checks the manifests, skill frontmatter, vendored checksums, JS syntax and the engine selftest.
+
 ## v1.2.0: embedded dictionaries & resource packs (2026-10-12)
 Everything is vendored into the repo (offline, licences preserved). Nothing is link-only any more.
 - **Fonts:** 31 new OFL families, **41 in total** (Cairo, Tajawal, Almarai, IBM Plex Sans Arabic, Alexandria, Noto Naskh,
