@@ -41,3 +41,13 @@
 - Pre-render cards/paper/text in INITS (each `paper()` costs ms). Cache per-progress canvases (ink reveal).
 - Keep plates ≤ 2560 px wide; huge images slow every frame.
 - A still should render in < 300 ms; if not, find the per-frame allocation.
+
+## Resource packs (v1.2): use them, don't reinvent
+- **Named moves:** `move('popIn', t, t0, box, fn)`, `seqMove`, `staggerMove` → `library/motion_recipes.md` (84 moves + combos).
+- **Transitions:** 15 canvas `TRANS` + 125 GPU `gl:<Name>` → `library/transitions.md`, `library/gl_transitions.md`.
+- **Icons:** `icon(name, x, y, size, {k})` with exact draw-on, `iconSearch(q)` → `library/icons.md`.
+- **Patterns:** `pattern('star8', t, {k})` and 12 more → `library/patterns.md`.
+- **Palettes:** `applyPalette(heritage('…'))` → `library/color_systems.md §8`.
+- **Shot ideas with frame numbers:** `library/shot_cards_index.md` → `resources/skills/shotcraft-shot-cards/`.
+- **Effect names → code:** `library/effects_dictionary.md`. Terms: `library/glossary.md`.
+- Smoke test after editing engine files: `node tools/selftest.mjs`.

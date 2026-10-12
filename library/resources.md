@@ -1,5 +1,6 @@
 # Open-source motion ecosystem (researched Oct 2026) — what we took from each
 
+**v1.2: the open-licence ones are now vendored in [`resources/`](../resources/README.md)** (offline, with licences) and the data packs in `engine/kit/`. This page stays as the map of the wider ecosystem.
 This skill is self-contained: nothing below is required. These are the best open resources of 2026, what
 each is good for, and which of their ideas are already distilled into this repo (with the file).
 
@@ -39,7 +40,7 @@ Optional if you want them: GSAP (free incl. SplitText/MorphSVG since 2025), culo
 flubber (shape morph), d3-ease, simplex-noise, lottie-web, three.js (WebGL scenes).
 
 ## Assets
-Fonts: Google Fonts repo (OFL) → `tools/fonts.sh`, list in library/fonts.md · Icons: Lucide (ISC),
+**Embedded (v1.2):** 41 OFL fonts (`engine/kit/fonts`), 1877 Lucide icons, 1000 palettes + Open Color (`engine/kit/data`), 125 GL transitions. More on demand: Fonts: Google Fonts repo (OFL) → `tools/fonts.sh`, list in library/fonts.md · Icons: Lucide (ISC),
 Tabler (MIT), Iconify sets · Images: Wikimedia Commons, museum open-access (Met, Rijksmuseum, Smithsonian,
 NYPL) → library/asset_sourcing.md · SFX: synthesize with tools/sfx.mjs, or freesound (check CC licence),
 Mixkit · Textures: own scans, Poly Haven (CC0).

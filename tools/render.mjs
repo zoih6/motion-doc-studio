@@ -9,7 +9,7 @@ import { pathToFileURL } from 'node:url';
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
 const CRF = arg('crf', '18'), FPS = +arg('fps', 30), FROM = +arg('from', 0), TO = +arg('to', 20.8), SUB = +arg('sub', 2), OUT = arg('out', 'out/silent.mp4');
 mkdirSync('out', { recursive: true });
-const browser = await chromium.launch({ args: ['--allow-file-access-from-files'] });
+const browser = await chromium.launch({ args: ['--allow-file-access-from-files', '--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist'] });
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
 page.on('pageerror', e => console.log('ERR', e.message));
 await page.goto(pathToFileURL(resolve(process.env.PAGE || 'index.html')).href);

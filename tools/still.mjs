@@ -3,7 +3,7 @@ import { chromium } from 'playwright';
 import { resolve } from 'node:path'; import { mkdirSync } from 'node:fs'; import { pathToFileURL } from 'node:url';
 mkdirSync('tmp', { recursive: true });
 const ts = process.argv.slice(2).map(Number);
-const b = await chromium.launch({ args: ['--allow-file-access-from-files'] });
+const b = await chromium.launch({ args: ['--allow-file-access-from-files', '--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist'] });
 const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
 p.on('console', m => console.log('console:', m.text())); p.on('pageerror', e => console.log('ERR', e.message));
 await p.goto(pathToFileURL(resolve(process.env.PAGE || 'index.html')).href);

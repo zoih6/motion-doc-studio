@@ -57,3 +57,13 @@ green = success, grey = past/inactive. Colour coding across a film is a narrativ
 Render in sRGB canvas → encode H.264 **tagged BT.709** (`-colorspace bt709 -color_primaries bt709
 -color_trc bt709`), verify with `ffprobe`. Approve in Chrome/VLC, never in QuickTime (gamma shift).
 Limited-range banding in dark gradients → add grain before encoding.
+
+## 8 · Palette packs (v1.2) — vendored + original
+Code: [`engine/assets.js`](../engine/assets.js) §1 · data: `engine/kit/data/palettes.js` · sheet: [specimens/palettes.jpg](specimens/palettes.jpg)
+- **HERITAGE** (20 original named palettes with roles): `sanaaOldCity`, `iznikTile`, `mamlukGold`, `andalusZellige`, `damascusNight`, `ottomanManuscript`, `desertDune`, `hijazCoral`, `saffronIndigo`, `palmyraStone`, `nileReed`, `kufiBlueprint`, `voxExplainer`, `newsroom`, `archiveSepia`, `riso`, `neonNoir`, `swissPoster`, `forestData`, `pastelEdu`.
+  `heritage('mamlukGold')` returns `{bg, ink, paper, accent, accent2, muted}`.
+- **NICE_PALETTES**: the 1000 most-loved ColourLovers palettes (MIT, Jam3). `palette(i)` → 5 hex values; `paletteRoles(p)` assigns bg/ink/accent automatically, with ink ≥ 4.5:1 contrast guaranteed (it falls back to off-white/off-black if needed).
+  Use `palettesBy({dark:true, minChroma:.12, hue:[20,70]})` to filter by mood.
+- **OPEN_COLOR**: 15 hues × 10 shades (MIT). `oc('teal', 7)` gives UI-grade neutrals and data series.
+- Apply to the engine: `applyPalette(heritage('iznikTile'))` (or `applyPalette(paletteRoles(palette(42)))`) inside a scene `INITS` function. It maps the roles onto `PAL` keys, so all core helpers recolour.
+- Rule: a found palette is a **starting point**. Still fix one accent, run `contrast()`, and keep 60/30/10.

@@ -24,13 +24,15 @@ Write it before building. Keep it to one page. Template:
 4. Map to engine settings: `window.FILM.palette`, fonts, `grade()` tint, `paper()` options, `rays()`.
 5. Make a **style frame**: one fully finished still (hero + card + plate) and show it in the first sample.
 
-Ready-made bibles: `library/style_presets.md`. Real example: `examples/thuluth/STYLE_v3.md`.
+Ready-made bibles: `library/style_presets.md` (6 deep presets) and **`library/style_catalog.md` (40 styles mapped to engine values: palette key, fonts, persona, moves, transitions, look, pattern)**. Real example: `examples/thuluth/STYLE_v3.md`.
 
 ## Pro checklist (v1.1) — fill these lines in STYLE.md too
 - **Motion language:** persona · signature curve · exit curve · base unit · springs · transition family + accent
   · stagger · hold → `library/easing_timing.md §0`
 - **Palette in OKLCH** with roles (60/30/10, tinted neutrals, rare pop) and `contrast()` checks → `library/color_systems.md`
-- **Type roles:** caption / emphasis / display / meta faces from `library/fonts.md`; kinetic modes → `library/kinetic_typography.md`
+- **Palette source:** `heritage('<key>')` or a filtered `palette(i)` → `paletteRoles()` (`library/color_systems.md §8`)
+- **Pattern family (optional):** one `pattern()` kind (`library/patterns.md`)
+- **Type roles:** caption / emphasis / display / meta faces from the 41 bundled families in `library/fonts.md`; kinetic modes → `library/kinetic_typography.md`
 - **Camera:** depth planes + allowed moves → `library/camera_language.md`
 - **Look per register:** `FILM.post` chain → `library/compositing_fx.md`
 - From a reference video: run `tools/video_dna.py` first → `workflow/09_reference_dna.md`

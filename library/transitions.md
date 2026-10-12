@@ -54,3 +54,7 @@ left — natural for RTL). The outgoing shot keeps animating during the transiti
 ## SFX pairing (tools/sfx.mjs cues)
 whip → whoosh (pitch down) · zoom → riser + thump · flash → camera click/impact · tear → paper rip ·
 glitch → digital crackle · band → swish · cut on punchline → silence or a hit. Duck the bed under VO.
+
+## GPU pack (v1.2): 125 more transitions
+`engine/gl.js` + `engine/kit/data/gl_transitions.js` register every gl-transitions shader as `tin: 'gl:<Name>'` (e.g. `gl:Dreamy`, `gl:cube`, `gl:luma`, `gl:hexagonalize`).
+Catalogue, curated picks by intent, and parameters: [gl_transitions.md](gl_transitions.md). Shot-level transition recipes (hidden cuts, line-carry, iris match…): [shot_cards_index.md](shot_cards_index.md) → `transition/`.

@@ -6,7 +6,7 @@ description: >
   animation engine → critique loops → chunked render → audio mix → GitHub delivery. Use whenever a user
   asks for a motion-graphics video, animated documentary, explainer, "VOX style" piece, or wants an
   existing video remade/restyled. Works with any coding agent that can run bash, node, python, ffmpeg.
-version: 1.1.0
+version: 1.2.0
 ---
 
 # Motion-Doc Studio — canonical skill
@@ -17,7 +17,8 @@ FFmpeg. This gives frame-exact sync with the voice-over, deterministic re-render
 chunked rendering on small machines.
 
 This file is the source of truth. Detailed rules live in `rules/`, step-by-step procedures in
-`workflow/`, reusable recipes in `library/`, runnable code in `engine/` + `tools/`, and a complete
+`workflow/`, reusable recipes and dictionaries in `library/`, runnable code in `engine/` + `tools/`, vendored
+open-licence expert material in `resources/` (offline), and a complete
 real production in `examples/thuluth/` (3:56 Arabic documentary — watch it before your first film).
 
 ---
@@ -93,8 +94,19 @@ real production in `examples/thuluth/` (3:56 Arabic documentary — watch it bef
   - `library/kinetic_typography.md` — Arabic-safe kinetic type: roles, 8 entrance modes, VO sync, 20 techniques.
   - `library/color_systems.md` — palettes in OKLCH, 60/30/10, perceptual mixing, grading order, 10 palettes.
   - `library/compositing_fx.md` — blend modes, grain/bloom/halation/CA/leaks/LGG grade, 8 finished LOOKS.
-  - `library/fonts.md` — 10 bundled OFL fonts by role, pairings, 20 more Arabic families (`tools/fonts.sh`).
+  - `library/fonts.md`: 41 bundled OFL families by role, 17 pairings, Arabic type rules for motion.
   - `library/resources.md` — the 2026 open-source motion ecosystem and what was distilled from each.
+- **Dictionaries & resource packs (v1.2)**: everything below is embedded in the repo and works offline:
+  - `library/glossary.md`: bilingual EN⇄AR motion-design dictionary (≈170 terms → where each lives in code).
+  - `library/motion_recipes.md`: **84 named moves** (`engine/moves.js`: entrances/exits/emphasis/loops) + 12 combos.
+  - `library/style_catalog.md`: **40 styles** mapped to engine values (palette, fonts, persona, moves, transitions, look, pattern).
+  - `library/effects_dictionary.md`: effect name → engine call → reference shot card.
+  - `library/gl_transitions.md`: **125 GPU transitions** (`tin:'gl:<Name>'`) with curated picks by intent.
+  - `library/shot_cards_index.md`: English index of **124 vendored shot cards** (frame-timed recipes).
+  - `library/fonts.md`: **41 bundled OFL families** (Kufi, Naskh, Thuluth-like, Ruqʿa, Nastaʿlīq, square Kufi, colour fonts…) by role + 17 pairings.
+  - `library/icons.md`: **1877 Lucide icons** with exact draw-on. `library/patterns.md`: 13 procedural patterns (Islamic geometry + textures).
+  - `library/color_systems.md §8`: 20 original heritage palettes + 1000 vendored palettes + Open Color.
+  - Visual sheets: `library/specimens/*.jpg`. Vendored originals + licences: `resources/README.md`, `resources/NOTICE.md`.
 - Reference DNA example: `examples/reference_dna/DNA.md` (20 s Arabic app ad → preset F in style_presets).
 
 ## 4 · Engine & tools (runnable)
@@ -112,7 +124,14 @@ engine/fx.js          PRO LAYER: Penner+bezier easings, CURVE, kf(), SPRINGS, PE
                       handCircle/pathDraw/burst/sparkles/bubble/pill/cursor/ripple/sprite/phone/sticker/
                       scatter · TRANS: whip zoom flash dip iris clock blinds push slide barn luma glitch
                       smear band whipUp (shot.tin)
-engine/index.html     film page template (window.FILM config: palette, fonts, type scale)
+engine/gl.js          GPU runner: every shader of kit/data/gl_transitions.js → TRANS['gl:<Name>'] (shot.glParams)
+engine/moves.js       MOVES dictionary (84 named moves) · move() · seqMove() · staggerMove() · movesBy()
+engine/assets.js      palettes (palette/paletteRoles/applyPalette/palettesBy/HERITAGE/oc) · icon()/iconSearch() ·
+                      pattern(kind, t, {k}): star8 rosette star6 star12 girihNet mashrabiya dots halftone grid lines waves iso topo
+engine/kit/fonts/     41 OFL families + fonts.css + fonts.js (FONT_REGISTRY, fontsBy, fontLoads) + README (licences)
+engine/kit/data/      palettes.js · icons_lucide.js · gl_transitions.js (vendored packs as JS globals, file://-safe)
+engine/specimens.html visual browser of all packs (fonts, palettes, icons, patterns, moves, GL transitions)
+engine/index.html     film page template (window.FILM config: palette, fonts, type scale; loads all packs)
 engine/scenes/demo.js 16 s demo = template for scene files
 tools/setup.sh        ffmpeg + playwright/chromium (idempotent, re-run after resets)
 tools/transcribe.py   VO → word timings (faster-whisper)      tools/find_word.py  word → time lookup
@@ -128,8 +147,11 @@ tools/new_film.sh     scaffold a new film project (engine copy + tools + doc tem
 tools/video_dna.py    reference video → cuts, transitions (frame counts), flashes, palette+OKLCH, loudness,
                       onsets, contact sheets, shot keyframes, report.md (never copies the video)
 tools/fonts.sh        download OFL Arabic/Latin families from google/fonts by name
+tools/build_fonts.py  regenerate kit/fonts/{fonts.css,fonts.js,README.md}     tools/build_data.mjs  rebuild data packs from upstream
+tools/build_docs.mjs  regenerate dictionary tables (moves, GL catalogue, icon index) from code
+tools/specimens.mjs   regenerate library/specimens/*.jpg       tools/selftest.mjs  smoke-test engine + every pack
 ```
-Start a film: `tools/new_film.sh /var/tmp/<film>`. Quick check that everything works: `./tools/setup.sh && cd engine && PAGE=index.html ../tools/cs.sh demo 4 1.5 6.9 10.6 14.5`.
+Start a film: `tools/new_film.sh /var/tmp/<film>`. Quick check that everything works: `./tools/setup.sh && node tools/selftest.mjs && cd engine && PAGE=index.html ../tools/cs.sh demo 4 1.5 6.9 10.6 14.5`.
 
 ## 5 · Definition of done
 - Final duration == VO duration (frames = round(dur × fps)); integrated loudness −14 ±1 LUFS, TP ≤ −1.5.

@@ -12,6 +12,10 @@ remake or restyle one, follow it.
 3. Watch/inspect `examples/thuluth/` (README + contact.jpg + code) — the quality bar.
 4. Then the `workflow/` file of the step you are on, and the `library/` file of the decision you are making
    (easing_timing, camera_language, transitions, kinetic_typography, color_systems, compositing_fx, fonts).
+   Look things up in the dictionaries instead of inventing: `library/style_catalog.md` (40 styles),
+   `library/motion_recipes.md` (84 moves), `library/gl_transitions.md` (125 transitions), `library/effects_dictionary.md`,
+   `library/glossary.md`, `library/shot_cards_index.md` (124 shot cards), `library/icons.md`, `library/patterns.md`.
+   Vendored expert originals (offline, with licences): `resources/README.md`.
 5. Reference video from the user? → `workflow/09_reference_dna.md` + `tools/video_dna.py` (learn the grammar, never copy).
 
 ## Operating mode

@@ -1,5 +1,31 @@
 # Changelog
 
+## v1.2.0: embedded dictionaries & resource packs (2026-10-12)
+Everything is vendored into the repo (offline, licences preserved). Nothing is link-only any more.
+- **Fonts:** 31 new OFL families, **41 in total** (Cairo, Tajawal, Almarai, IBM Plex Sans Arabic, Alexandria, Noto Naskh,
+  Scheherazade New, Lateef, Markazi, Mirza, Aref Ruqaa Ink (colour), Noto Nastaliq, Gulzar, Qahiri, Reem Kufi / Fun / Ink,
+  Kufam, Blaka, Lemonada, Baloo Bhaijaan 2, Jomhuria, Katibeh, Vibes, Harmattan, Mada, Handjet, Inter, Space Grotesk,
+  Fraunces, JetBrains Mono). Generated `fonts.css`, `fonts.js` registry (`FONT_REGISTRY`, `fontsBy`, `fontLoads`) and licence
+  table (`tools/build_fonts.py`); `library/fonts.md` rewritten (roles, 17 pairings, Arabic motion-type rules).
+- **engine/gl.js + kit/data/gl_transitions.js:** 125 gl-transitions shaders (MIT/BSD, authors kept) registered as
+  `TRANS['gl:<Name>']` with `shot.glParams`; procedural luma/displacement maps; `library/gl_transitions.md`.
+- **engine/moves.js:** `MOVES` dictionary of 84 named moves (34 entrances, 18 exits, 21 emphasis, 11 loops), plus
+  `move()`, `seqMove()`, `staggerMove()` (rtl/ltr/center/random). Original implementations. `library/motion_recipes.md`.
+- **engine/assets.js:** palettes (`palette`, `paletteRoles`, `applyPalette`, `palettesBy`, `oc`, 20 original `HERITAGE`
+  palettes), icons (`icon` with exact draw-on, `iconSearch`), 13 procedural patterns (`star8`, `rosette`, `star6`, `star12`,
+  `girihNet`, `mashrabiya`, `dots`, `halftone`, `grid`, `lines`, `waves`, `iso`, `topo`).
+- **kit/data:** `palettes.js` (1000 nice-color-palettes + Open Color, MIT), `icons_lucide.js` (1877 Lucide icons, ISC,
+  per-element path + measured length).
+- **library/ dictionaries (new):** `glossary.md` (bilingual, ≈170 terms → code), `style_catalog.md` (40 styles → engine
+  values), `effects_dictionary.md`, `shot_cards_index.md` (124 cards, English), `icons.md`, `patterns.md`, `gl_transitions.md`,
+  `motion_recipes.md`; `library/specimens/*.jpg` visual sheets.
+- **resources/ (new):** vendored skills with their licences: LottieFiles motion-design, iart motion-design-skills (9),
+  Emil Kowalski (animation-vocabulary, review, improve, animate, performance), GSAP skills (8), video-shotcraft shot cards
+  (124 + sequences + aesthetic/beat/sound/review docs), anidoodle (22 style sheets, motion grammar, camera, craft bar), orca
+  motion, collage-broll, html-animation. Plus `resources/README.md`, `resources/NOTICE.md`, `resources/licenses/`.
+- **tools:** `build_data.mjs`, `build_fonts.py`, `build_docs.mjs`, `specimens.mjs`, `selftest.mjs`; render/still launch Chromium
+  with SwiftShader WebGL. `engine/index.html` loads all packs; `engine/specimens.html` is a visual browser.
+
 ## v1.1.0 — pro layer (2026-10-12)
 - **engine/fx.js** (new): Penner + cubic-bezier easings, named industry curves, keyframes `kf()`, spring
   library, motion personalities; seeded simplex noise, wiggle, handheld; OKLab/OKLCH colour mixing and WCAG

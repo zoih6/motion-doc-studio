@@ -40,6 +40,11 @@
 | `templates/` | البريف، وقائمة اللقطات، وملف المتابعة، ورسالة البداية |
 | `engine/fx.js` | **الطبقة الاحترافية (v1.1):** منحنيات الحركة (Penner وbezier وspring)، كاميرا 2.5D (دولي، أوربت، فيرتيغو، تغيير البؤرة، اهتزاز)، طباعة حركية عربية كلمة بكلمة متزامنة مع الصوت، تأثيرات (حبيبات، Bloom، Halation، زيغ لوني، تسرّب ضوء، تدريج لوني) و8 «لوكات» جاهزة، و16 انتقالًا (whip، zoom، flash، iris، clock، luma، glitch، smear…) |
 | `library/` (جديد) | أدلة احترافية: التوقيت والمنحنيات، لغة الكاميرا، قاموس الانتقالات، الطباعة الحركية، أنظمة الألوان (OKLCH)، الدمج والتأثيرات، الخطوط، وموارد 2026 مفتوحة المصدر |
+| `library/` قواميس v1.2 | **قاموس مصطلحات** عربي–إنجليزي (≈170 مصطلحًا) · **قاموس 84 حركة** مسمّاة · **كتالوج 40 أسلوبًا** مربوطة بقيم المحرك · **قاموس المؤثرات** · **125 انتقالًا GPU** · فهرس **124 بطاقة لقطة** · دليل الأيقونات والنقوش · لوحات صور مرجعية في `library/specimens/` |
+| `engine/kit/fonts/` | **41 عائلة خطوط مفتوحة (OFL)**: نسخ، رقعة، نستعليق، كوفي قاهري مربّع، كوفي فاطمي، خطوط ملوّنة، خطوط عرض حديثة، ولاتينية، مع سجلّ برمجي وجدول تراخيص |
+| `engine/kit/data/` | حزم بيانات مضمّنة: **1000 لوحة ألوان** + Open Color، **1877 أيقونة Lucide** برسم تدريجي دقيق، **125 انتقال GLSL** |
+| `engine/moves.js` · `assets.js` · `gl.js` | قاموس الحركات البرمجي، والألوان (20 لوحة تراثية أصلية: صنعاء، إزنيق، المماليك، الأندلس…)، والأيقونات، و13 نقشًا إجرائيًا (نجمة ثمانية، شمسة، اثنا عشرية، كريه، مشربية…)، ومشغّل الانتقالات |
+| `resources/` | **مواد خبراء مضمّنة بتراخيصها الأصلية** (تعمل دون إنترنت): LottieFiles وiart (9 مهارات) وEmil Kowalski وGSAP وvideo-shotcraft (124 بطاقة لقطة) وanidoodle (22 أسلوب رسم) وorca وcollage-broll |
 | `examples/reference_dna/` | تحليل «DNA» لفيديو مرجعي (إعلان عربي 20 ث): الإيقاع، الألوان، الخطوط، الحركة، الانتقالات — مع أداة `tools/video_dna.py` لتحليل أي فيديو |
 | `examples/thuluth/` | الفيلم الحقيقي كاملًا: الفيديو، وكود المشاهد، ودليل الأسلوب، والتوقيتات، والدروس |
 
@@ -74,6 +79,15 @@ transitions), eight new `library/` guides (timing, camera, transitions, kinetic 
 compositing, fonts, 2026 resources), 8 extra OFL fonts, `tools/video_dna.py` (measure a reference video's
 style DNA), `tools/fonts.sh`, preset **F · Sticker-Pop Dialect Ad**, and `examples/reference_dna/`.
 
+### v1.2: embedded dictionaries & resource packs
+Everything is **in the repo**, offline, licence-preserved: 41 OFL font families (`engine/kit/fonts`, registry + licence table),
+1000 palettes + Open Color + 20 original heritage palettes, 1877 Lucide icons with exact draw-on, 125 GLSL transitions
+(`tin:'gl:<Name>'`), the 84-move `MOVES` dictionary, 13 procedural patterns (Islamic geometry + textures), and new
+dictionaries in `library/` (bilingual glossary, 40-style catalogue, effects, GL catalogue, 124 shot-card index, icons,
+patterns) with visual sheets in `library/specimens/`. Vendored expert skills (LottieFiles, iart, Emil Kowalski, GSAP,
+video-shotcraft, anidoodle, orca…) live in `resources/` with their licences ([resources/README.md](resources/README.md)).
+Smoke test: `node tools/selftest.mjs`.
+
 ### How it works
 Each frame is `render(t)` on a 1920×1080 canvas (pure function of time, seeded RNG). Playwright captures frames
 (2 sub-frames → motion blur), FFmpeg encodes 6-second chunks in fresh browsers (crash-safe on 2 GB RAM),
@@ -81,6 +95,6 @@ parts are uploaded to GitHub Releases, and one global audio mix (VO + synthesise
 produces the final 1080p/720p.
 
 ### Licence
-Code: MIT. Fonts: SIL OFL (Amiri, Noto Kufi Arabic, Readex Pro, Changa, El Messiri, Lalezar, Aref Ruqaa,
-Marhey, Rakkas, IBM Plex Mono). Example film assets: see the production repo's credits
+Code: MIT. Fonts: SIL OFL 1.1 (41 families, see `engine/kit/fonts/README.md`). Vendored third-party material keeps its
+own licence (MIT / Apache-2.0 / ISC / BSD). See [`resources/NOTICE.md`](resources/NOTICE.md). Example film assets: see the production repo's credits
 (public-domain/CC artefacts + AI-generated plates/portraits).
