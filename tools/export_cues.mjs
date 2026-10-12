@@ -14,7 +14,7 @@ import { pathToFileURL } from 'node:url';
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
 const PAGE = process.env.PAGE || 'index.html', OUT = arg('out', 'audio/cues.json'), CFG = arg('config', 'audio/sound.json');
 
-const browser = await chromium.launch({ args: ['--allow-file-access-from-files', '--enable-unsafe-swiftshader', '--use-angle=swiftshader'] });
+const browser = await chromium.launch({ args: ['--allow-file-access-from-files', ...(process.env.RENDER_GL === 'swiftshader' ? ['--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist'] : [])] });
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 const errs = []; page.on('pageerror', (e) => errs.push(e.message));
 await page.goto(pathToFileURL(resolve(PAGE)).href);

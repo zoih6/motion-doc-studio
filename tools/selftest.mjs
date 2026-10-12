@@ -2,7 +2,7 @@
 //   node tools/selftest.mjs        (run from repo root)  → exit 1 on any failure
 import { chromium } from 'playwright';
 import { resolve } from 'node:path'; import { pathToFileURL } from 'node:url';
-const b = await chromium.launch({ args: ['--allow-file-access-from-files', '--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist'] });
+const b = await chromium.launch({ args: ['--allow-file-access-from-files', ...(process.env.RENDER_GL === 'swiftshader' ? ['--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist'] : [])] });
 const p = await b.newPage({ viewport: { width: 1920, height: 1080 } }); const errs = [];
 p.on('pageerror', e => errs.push('pageerror ' + e.message));
 await p.goto(pathToFileURL(resolve('engine/index.html')).href);
@@ -36,7 +36,27 @@ const r = await p.evaluate(async () => {
     if (!CUES.some((c) => c.weight === 'hero')) F('cues', 'no hero in demo');
   } catch (e) { F('cues.js', e); }
   return out; });
+// KINETIC TYPE layer (engine/type.js) inside the 9:16 kinetic page: every entrance/exit/partner + kashida rules
+const p2 = await b.newPage(); p2.on('pageerror', e => errs.push('kinetic pageerror ' + e.message));
+await p2.goto(pathToFileURL(resolve('engine/kinetic.html')).href);
+await p2.waitForFunction(() => window.ready === true, null, { timeout: 60000 });
+const k = await p2.evaluate(() => {
+  const fail = [], F = (k, e) => fail.push(k + ': ' + (e && e.message || e));
+  const Wd = KT.word('تجربة', { size: 120 }), V = KT.stretch('تتحرّك', { size: 100 }, 3);
+  for (const n of Object.keys(KT.IN)) for (const t of [0, .05, .2, .5, 1, 2]) { try { KT.show(Wd, t, { x: 540, y: 900, t0: .1, in: n, t1: 1.5, out: 'fade' }); } catch (e) { F('in ' + n, e); } }
+  for (const n of Object.keys(KT.OUT)) for (const t of [1.4, 1.55, 1.7, 2.5]) { try { KT.show(Wd, t, { x: 540, y: 900, t0: 0, in: 'rise', t1: 1.5, out: n }); } catch (e) { F('out ' + n, e); } }
+  try { KT.show(V, 1, { x: 540, y: 900, t0: 0, in: 'none', keys: [[0, 0], [.5, 3]], echo: { n: 2 }, wiggle: {}, drift: [0, -5], chroma: 4, dimAt: .5 }); } catch (e) { F('show options', e); }
+  try { const t = .5; KT.leader(t, 0, 540, 900); KT.dot(t, 0, 1, 1); KT.comet(t, 0, 540, 900, 300, 150); KT.ring(t, 0, 540, 900, 100); KT.underline(t, 0, 540, 900, 300); KT.bar(t, 0, 540, 900, 300, 60);
+    KT.line(t, 0, 0, 0, 100, 100); KT.hinge(t, 0, 540, 900, 200, { keys: [[0, 0], [.3, .4]] }); KT.bubble(t, 0, 540, 900, 80); KT.clipTo(KT.panel(t, 0, 540, 900, 400, 200), () => {});
+    KT.orbit(t, 0, 540, 900, 200); KT.streak(.1, 0); KT.bokeh(t); KT.group(t, { x: 1, flip: { t0: 0, dur: 1 }, swing: { t0: 0, amp: .2 } }, () => {}); KT.post(t); } catch (e) { F('partners', e); }
+  const kc = [['تتحرّك', 2, 'تتحــرّك'], ['السلام', 2, 'الســلام'], ['ما انام', 3, 'مـــا انـــام'], ['دار', 2, 'دار']];
+  for (const [w, n, want] of kc) { const got = KT.kashida(w, n); if (got !== want) F('kashida ' + w, got + ' != ' + want); }
+  if (KT.kashida('الله', 2).includes('لـا')) F('kashida', 'broke lam-alef');
+  if (KT.timeline([{ w: 'a', s: 0, e: .2 }, { w: 'b', s: .3, e: .9 }])[0].t1 < .8) F('timeline', 'minHold not applied');
+  return { fail, ins: Object.keys(KT.IN).length, outs: Object.keys(KT.OUT).length, size: [W, H] };
+});
 await b.close();
+r.fail.push(...k.fail); r.counts.ktIn = k.ins; r.counts.ktOut = k.outs; r.counts.ktCanvas = k.size.join('x');
 console.log(JSON.stringify(r.counts), 'darkPalettes', r.darkPalettes);
 const fails = [...errs, ...r.fail];
 if (fails.length) { console.log('FAIL', fails.length); console.log(fails.slice(0, 40).join('\n')); process.exit(1); }
