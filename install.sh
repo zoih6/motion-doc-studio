@@ -4,15 +4,15 @@
 #   curl -fsSL https://raw.githubusercontent.com/zoih6/motion-doc-studio/main/install.sh | bash
 #
 # What it does
-#   1. clones (or fast-forwards) the studio into $MDS_HOME (default ~/.motion-doc-studio)
-#   2. installs dependencies: ffmpeg, uv, node packages, Playwright Chromium   (skip: MDS_DEPS=0)
+#   1. sparse-clones (or fast-forwards) runtime files into $MDS_HOME (default ~/.motion-doc-studio); large examples stay on GitHub
+#   2. optionally installs renderer dependencies: ffmpeg, node packages, Playwright Chromium (enable: MDS_DEPS=1)
 #   3. links the skills  motion-director + motion-doc-studio + motion-sound-layer  into every agent skill folder it finds:
 #        ~/.agents/skills (always: Codex, Gemini CLI, OpenCode, Amp and other Agent-Skills readers)
 #        ~/.claude/skills  ~/.cursor/skills  ~/.copilot/skills  ~/.config/opencode/skills  ~/.windsurf/skills
 #        (only if that agent's folder exists; force a list with MDS_AGENTS="claude cursor …")
 #   4. verifies: skill frontmatter, studio locator, vendored sound-layer checksums, engine selftest
 # Options (env)
-#   MDS_HOME=~/.motion-doc-studio   MDS_REF=main   MDS_DEPS=0   MDS_KIT=1 (also build the 1,139-sound CC0 kit, ≈220 MB)
+#   MDS_HOME=~/.motion-doc-studio   MDS_REF=main   MDS_DEPS=0 (default)   MDS_KIT=1 (also build 1,139-sound CC0 kit, ≈220 MB)
 #   MDS_PROJECT=/path/to/project    also link into <project>/.claude/skills and <project>/.agents/skills
 #   MDS_COPY=1  copy instead of symlink      MDS_UNINSTALL=1  remove the skill links (keeps $MDS_HOME)
 set -eu
@@ -21,6 +21,7 @@ H="${MDS_HOME:-$HOME/.motion-doc-studio}"; REF="${MDS_REF:-main}"
 SKILLS="motion-director motion-doc-studio motion-sound-layer"
 say() { printf '\033[1;33m▸\033[0m %s\n' "$*"; }; ok() { printf '\033[1;32m✓\033[0m %s\n' "$*"; }; warn() { printf '\033[1;31m!\033[0m %s\n' "$*"; }
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+[ "${MDS_KIT:-}" = 1 ] && MDS_SOUND=1
 
 targets() {
   if [ -n "${MDS_AGENTS:-}" ]; then
@@ -50,27 +51,35 @@ fi
 command -v git >/dev/null || { warn "git is required"; exit 1; }
 if [ -d "$H/.git" ]; then say "updating $H"; git -C "$H" fetch -q --depth 1 origin "$REF" && git -C "$H" checkout -q -B "$REF" FETCH_HEAD
 elif [ -e "$H" ]; then warn "$H exists but is not a git clone. Set MDS_HOME or move it"; exit 1
-else say "cloning $REPO → $H"; git clone -q --depth 1 --branch "$REF" "$REPO" "$H"; fi
+else
+  say "sparse-cloning runtime files from $REPO → $H (large examples are not downloaded)"
+  git clone -q --depth 1 --filter=blob:none --sparse --branch "$REF" "$REPO" "$H"
+  git -C "$H" sparse-checkout set skills agents workflow rules library engine tools vendor templates .claude-plugin
+fi
 V=$(sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' "$H/.claude-plugin/plugin.json" | head -1); ok "studio v$V at $H"
 
 # 2 · dependencies
 SUDO=""; [ "$(id -u)" != 0 ] && command -v sudo >/dev/null && SUDO=sudo
-if [ "${MDS_DEPS:-1}" != 0 ]; then
+if [ "${MDS_DEPS:-0}" = 1 ]; then
   if ! command -v ffmpeg >/dev/null; then say "installing ffmpeg"
     if command -v apt-get >/dev/null; then $SUDO apt-get update -qq >/dev/null 2>&1; $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ffmpeg >/dev/null 2>&1 || true
     elif command -v brew >/dev/null; then brew install ffmpeg >/dev/null 2>&1 || true
     elif command -v dnf >/dev/null; then $SUDO dnf install -y ffmpeg >/dev/null 2>&1 || true; fi
   fi
   command -v ffmpeg >/dev/null && ok "ffmpeg" || warn "ffmpeg missing: install it (https://ffmpeg.org) and re-run"
-  command -v uv >/dev/null || { say "installing uv"; curl -LsSf https://astral.sh/uv/install.sh | sh >/dev/null 2>&1 || true; }
-  command -v uv >/dev/null && ok "uv $(uv --version | cut -d' ' -f2)" || warn "uv missing: https://docs.astral.sh/uv/ (needed by the sound layer)"
+  if [ "${MDS_SOUND:-0}" = 1 ]; then
+    command -v uv >/dev/null || { say "installing uv for sound layer"; curl -LsSf https://astral.sh/uv/install.sh | sh >/dev/null 2>&1 || true; }
+    command -v uv >/dev/null && ok "uv $(uv --version | cut -d' ' -f2)" || warn "uv missing: https://docs.astral.sh/uv/ (needed by the sound layer)"
+  else say "skipping uv; set MDS_SOUND=1 when using the sound layer"; fi
   if command -v node >/dev/null; then
     (cd "$H" && { [ -d node_modules/playwright ] || npm i --no-audit --no-fund --silent >/dev/null 2>&1; } \
       && npx --yes playwright install chromium >/dev/null 2>&1 \
       && { [ "$(uname)" = Linux ] && $SUDO npx --yes playwright install-deps chromium >/dev/null 2>&1 || true; }) \
       && ok "node $(node -v) + Playwright Chromium" || warn "Playwright setup incomplete: run  cd $H && ./tools/setup.sh"
   else warn "node ≥18 missing (https://nodejs.org): the renderer needs it"; fi
-  python3 -c "import numpy, PIL" 2>/dev/null || python3 -m pip install -q numpy pillow >/dev/null 2>&1 || python3 -m pip install -q --break-system-packages numpy pillow >/dev/null 2>&1 || true
+  if [ "${MDS_ANALYSIS:-0}" = 1 ]; then
+    python3 -c "import numpy, PIL" 2>/dev/null || python3 -m pip install -q numpy pillow >/dev/null 2>&1 || python3 -m pip install -q --break-system-packages numpy pillow >/dev/null 2>&1 || true
+  else say "skipping Python analysis libraries; set MDS_ANALYSIS=1 only for video DNA analysis"; fi
 fi
 
 # 3 · skills
@@ -93,10 +102,10 @@ loc=$(bash "$(targets | head -1)/motion-doc-studio/scripts/studio.sh" 2>/dev/nul
 [ "$loc" = "$(cd "$H" && pwd -P)" ] && ok "skills locate the studio" || { warn "studio locator returned '$loc'"; fail=1; }
 SHA="sha256sum"; command -v sha256sum >/dev/null || SHA="shasum -a 256"
 (cd "$H/vendor/opus-sound-layer" && $SHA -c --quiet ../opus-sound-layer.sha256 >/dev/null 2>&1) && ok "sound-layer scripts unmodified (pinned $(sed -n 's/^pinned_commit: *//p' "$H/vendor/README.md" | cut -c1-7))" || { warn "vendored sound-layer checksum mismatch"; fail=1; }
-if [ "${MDS_DEPS:-1}" != 0 ] && [ -d "$H/node_modules/playwright" ]; then
+if [ "${MDS_DEPS:-0}" = 1 ] && [ -d "$H/node_modules/playwright" ]; then
   (cd "$H" && node tools/selftest.mjs >/tmp/mds-selftest.log 2>&1) && ok "engine selftest" || warn "engine selftest failed: see /tmp/mds-selftest.log"
 fi
-if [ -n "${MDS_KIT:-}" ]; then say "building the CC0 sound kit (≈3–10 min)"; (cd "$H/engine" && ../tools/sound_layer.sh setup . >/dev/null && ../tools/sound_layer.sh kit . | tail -3); fi
+if [ "${MDS_KIT:-0}" = 1 ]; then say "building the CC0 sound kit (≈3–10 min)"; (cd "$H/engine" && ../tools/sound_layer.sh setup . >/dev/null && ../tools/sound_layer.sh kit . | tail -3); fi
 
 echo
 [ $fail = 0 ] && ok "Motion-Doc Studio v$V installed ($n skill links)." || warn "installed with problems (see above)"

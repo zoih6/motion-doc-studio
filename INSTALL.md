@@ -10,7 +10,7 @@
 - `motion-sound-layer`: adds real CC0 SFX and music placed from the picture's timing, a −14 LUFS mix, and QA gates.
 
 The studio files (engine, tools, rules, library, vendored sound-layer) live in one folder, by default
-`~/.motion-doc-studio`. The skills find it on their own with `skills/*/scripts/studio.sh`.
+`~/.motion-doc-studio`. The installer uses a shallow partial checkout of runtime folders; large example videos are not downloaded. The skills find it on their own with `skills/*/scripts/studio.sh`.
 
 ---
 
@@ -22,30 +22,32 @@ The studio files (engine, tools, rules, library, vendored sound-layer) live in o
 | **Gemini CLI** | `gemini extensions install https://github.com/zoih6/motion-doc-studio`, then Step 2 |
 | **Codex CLI** | `codex plugin marketplace add zoih6/motion-doc-studio && codex plugin add motion-doc-studio@motion-doc-studio`, then Step 2 with `MDS_AGENTS=agents` (dependencies + studio home) |
 | **Cursor, Copilot, OpenCode, Windsurf, Cline, Amp, Kiro, Antigravity, any other agent with a shell** | Step 2 |
-| **No bash (plain Windows)** | Use WSL or Git Bash and do Step 2. Otherwise run `npx skills add zoih6/motion-doc-studio -g -y`, then `git clone --depth 1 https://github.com/zoih6/motion-doc-studio %USERPROFILE%\.motion-doc-studio` and install ffmpeg, uv and Node ≥18 |
+| **No bash (plain Windows)** | Use WSL or Git Bash and do Step 2. Otherwise run `npx skills add zoih6/motion-doc-studio -g -y`, then `git clone --depth 1 https://github.com/zoih6/motion-doc-studio %USERPROFILE%\.motion-doc-studio` and install Node ≥18 and ffmpeg when ready to render (uv is only for the optional sound layer) |
 
 ## Step 2: Run the universal installer
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zoih6/motion-doc-studio/main/install.sh | bash
 ```
-It clones or updates `~/.motion-doc-studio` and installs **ffmpeg, uv, npm packages and Playwright Chromium**
-(it may ask for `sudo` on Linux). It links all three skills into `~/.agents/skills` plus every agent folder that
-exists (`~/.claude`, `~/.cursor`, `~/.copilot`, `~/.config/opencode`, `~/.windsurf`). Then it verifies the
-install. Useful options (env vars, before `bash`):
-- `MDS_KIT=1` also builds the CC0 sound library now (1,139 sounds, ≈220 MB). Use it if the user wants sound right away.
+By default it sparse-clones or updates `~/.motion-doc-studio`, links all three skills into `~/.agents/skills`
+plus every agent folder that exists (`~/.claude`, `~/.cursor`, `~/.copilot`, `~/.config/opencode`, `~/.windsurf`),
+and verifies the install without downloading renderer dependencies. When the first film is ready, install
+**ffmpeg, npm packages and Playwright Chromium** with `MDS_DEPS=1` (may ask for `sudo` on Linux), or run
+`tools/setup.sh` from the studio/project. Useful options:
+- With `MDS_DEPS=1`, `MDS_SOUND=1` also installs `uv` for sound and `MDS_ANALYSIS=1` adds Python `numpy`/Pillow for reference-video analysis. The renderer needs neither.
+- `MDS_KIT=1` builds the optional CC0 sound library (1,139 sounds, ≈220 MB). Use only when the current brief needs it and free space is confirmed.
 - `MDS_PROJECT=$PWD` also installs into this project (`.claude/skills`, `.agents/skills`).
-- `MDS_AGENTS="claude cursor"` installs only into these agents. `MDS_DEPS=0` skips dependencies.
+- `MDS_AGENTS="claude cursor"` installs only into these agents. `MDS_DEPS=1` opts into renderer dependencies during install; `MDS_DEPS=0` keeps intake-only installs light (default).
 - `MDS_HOME=/path` puts the studio somewhere else. `MDS_UNINSTALL=1` removes the links.
 
 Alternative (skills only, no dependencies): `npx skills add zoih6/motion-doc-studio -g -y`. The skills will
 clone the studio the first time they run, and `tools/setup.sh` installs the dependencies.
 
 ## Step 3: Verify (don't skip it)
-The installer must end with `✓ Motion-Doc Studio v2.x installed`. Confirm with:
+The installer must end with `✓ Motion-Doc Studio installed`. Confirm skill discovery with:
 ```bash
 bash ~/.agents/skills/motion-doc-studio/scripts/studio.sh          # prints the studio path
 ls ~/.motion-doc-studio/skills                                       # motion-director  motion-doc-studio  motion-sound-layer
-cd ~/.motion-doc-studio && node tools/selftest.mjs                   # "selftest OK" (needs the deps)
+cd ~/.motion-doc-studio && node tools/selftest.mjs                   # optional full engine selftest; first run MDS_DEPS=1 or tools/setup.sh
 ```
 If something failed, fix that one item. For example, install ffmpeg with the OS package manager, uv with
 `curl -LsSf https://astral.sh/uv/install.sh | sh`, or Node from nodejs.org. Re-run Step 2 after that; it is idempotent.

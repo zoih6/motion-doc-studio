@@ -1,6 +1,7 @@
 # 04 · Assets — real first, AI for gaps, processed to one look
 
 ## 0. Asset plan (`docs/assets.md`)
+Before downloading or installing image-processing models (e.g. background removal), check whether the output actually needs them and verify free space. Do not install optional `rembg`/OpenCV/scikit-learn models automatically; keep model caches outside the film repo and use a bounded, single-image process.
 For every shot in the shot list: what the hero needs, source type, resolution needed (≥2× on-screen size
 for push-ins), status. Group AI generations into **batches of ≤10** (tool limits), most important first.
 

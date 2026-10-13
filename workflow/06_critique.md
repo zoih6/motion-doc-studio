@@ -1,6 +1,6 @@
 # 06 · Critique loop — the difference between "ok" and "a million views"
 
-## The loop (≥3 rounds per section, more for the hook and the finale)
+## The loop (risk-based; no quota of repeated rounds)
 1. Render a contact sheet: 3 stills per shot (entry +0.4 s, middle, exit −0.3 s), 4 columns.
    `PAGE=index.html ../tools/cs.sh s05a 4 67.8 70.2 73.0 …`
 2. Look at it **as a viewer on a phone**: can I read every word? Where does my eye go first? Is anything
@@ -8,7 +8,7 @@
 3. Write the problems as a numbered list (in PROGRESS.md), each with the fix:
    "s05 74.5: three panels + label → crowded; drop the label, enlarge panels 1.2×".
 4. Fix, re-render only the affected times at full size (`still.mjs`) to verify details.
-5. Repeat until a round finds nothing important.
+5. For films ≤30 s, allow at most one focused fix pass; for longer films, repeat only when the review finds a material issue. Do not repeat a clean pass just to satisfy a round count.
 
 ## Critique lenses (run all)
 - **Composition:** thirds, margins, opposite-third card, quiet space ≥35 %.

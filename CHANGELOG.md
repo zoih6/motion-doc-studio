@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — resource-safe startup and bounded renders
+- Sparse/filtered studio checkout excludes example media and other non-runtime bulk; intake skips renderer dependencies until needed.
+- Sound kit and analysis/transcription tools are opt-in; the sound-layer setup reuses checksum-verified vendored scripts rather than cloning upstream for every film.
+- Short films use one small draft and one final, with bounded critique/QA; render code respects cgroup RAM/CPU limits, applies timeouts, validates resumable chunks, and refuses to overwrite existing outputs by default.
+- Cleanup rules preserve inputs and previous deliverables; only verified scratch created by the current run may be removed.
+
 ## v3.0 — 2026-10-13 «الخط الواحد»
 - NEW engine module `engine/line.js`: one-line films (LINE path + LCAM Hermite camera + BLOOM fills + world-anchored Kinetic-type words; Lucide icons drawn by the pen; LTR digit words + LTR pen reveals).
 - NEW `library/one_line_engine.md`: the five-act grammar (touch → identity → services → care&reveal → contact/outro) + the non-negotiable mechanics, each tied to a real production failure.

@@ -55,7 +55,7 @@ so «موافق على الافتراضي» works.
    on-screen text · it's a song/poem recording (lyrics are synced to it).
 4. **Visuals**: I'll send images/footage · **generate images (AI)** · real archival sources (Commons/museums) ·
    pure motion graphics & typography, no photos.
-5. **Music & sound**: **real CC0 SFX + music, placed and measured** (motion-sound-layer) · I have music · silent.
+5. **Music & sound**: provided/available music · **CC0 SFX + music** (motion-sound-layer; full kit only after need and disk check) · silent.
 6. **Style**: 3 directions *you* propose for this topic (name + 1-line mood each, from `library/style_catalog.md`) +
    «فاجئني / surprise me».
 Conditional (only if relevant): the exact text/lyrics (kinetic) · brand name/logo/colours (ads) · GitHub delivery
@@ -88,7 +88,7 @@ style, what you'll generate vs what they provide, estimated build/render time (`
 ### 6 · Hand off
 Save `docs/brief.md` (template), `docs/production_prompt.md` and `docs/research.md` in the project. Then start the
 pipeline: `tools/new_film.sh <dir>` (add `--kinetic --aspect 9:16` for text-only films) → `motion-doc-studio`
-step 1 onward (sample first) → `motion-sound-layer` for sound. Re-read the brief before every delivery.
+step 1 onward (≤30 s: 2–3 s draft; longer: one preview; no second approval after the approved brief unless requested) → `motion-sound-layer` only when sound is requested. Re-read the brief before delivery.
 
 ## Generating what the user doesn't have
 - **Voice-over:** use the agent's speech/TTS tool if it has one, letting the user pick between 2 voices. Otherwise offer
