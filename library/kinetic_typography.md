@@ -1,5 +1,9 @@
 # Kinetic typography (Arabic-first)
 
+> **v2.1:** for lyric videos, quotes, text-only films and any expressive text motion use the pro system
+> `library/kinetic_type_motion.md` + `engine/type.js` (motion pairs, kashida tracking, 20 entrances / 12 exits).
+> This file stays the reference for VO captions inside documentaries (`layoutWords/drawWords`).
+
 Code: `engine/fx.js` §7 — `layoutWords`, `drawWords`, `voTimes`, `letters`, `maskReveal`, `marker`,
 `blurSwap`, `weightText`; §5 `extrude`, `echo`, `rgbSplit`, `outline`; core `textImg`, `writeOn`, `card`.
 

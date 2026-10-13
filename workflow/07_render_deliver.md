@@ -1,5 +1,9 @@
 # 07 · Sample → full build → render → deliver
 
+> Speed (v2.1): iterate with `render.mjs --draft` (≈1.6–2.6 s per film-second on a small sandbox), finals with
+> `--workers auto`, part renders with `RENDER_WORKERS=auto python3 ../tools/render_seg.py …`. Details + honest
+> estimates: `workflow/11_render_speed.md`.
+
 ## Sample (always first)
 - 20–60 s covering the hook + one rich section, in the *final* style, with VO + SOUND LAYER (real SFX + music, qa.py run).
 - Render: `PAGE=index.html VO=tmp/vo.wav SFX=tmp/sfx.wav python3 ../tools/render_seg.py sample 0 <F1>`

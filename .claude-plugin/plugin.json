@@ -1,7 +1,7 @@
 {
   "name": "motion-doc-studio",
-  "version": "2.0.0",
-  "description": "Documentary & explainer motion-graphics films (VOX-style, cinematic, Arabic/RTL-ready) from a voice-over to a GitHub release, with a measured SOUND LAYER: real CC0 SFX + music placed from the picture's own springs, checked by QA.",
+  "version": "2.1.0",
+  "description": "Motion-graphics films from a messy idea: a Creative Director intake agent (questions, research, pro production prompt), documentary/explainer/reel films, pro Arabic kinetic typography (motion pairs, kashida), fast deterministic rendering, and a measured SOUND LAYER (real CC0 SFX + music, QA gates).",
   "author": {
     "name": "zoih6",
     "url": "https://github.com/zoih6"
@@ -23,7 +23,10 @@
     "canvas",
     "playwright",
     "ffmpeg",
-    "skills"
+    "skills",
+    "kinetic-typography",
+    "lyric-video",
+    "creative-director"
   ],
   "skills": "./skills"
 }

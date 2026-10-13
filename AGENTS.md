@@ -6,6 +6,12 @@ You have been given **Motion-Doc Studio**, a complete production system for docu
 films. When the user asks for a motion-graphics / explainer / documentary / "VOX-style" video, or to
 remake or restyle one, follow it.
 
+## New project? Start with the Creative Director
+Every new video starts with **`skills/motion-director/SKILL.md`** (the intake and prompt-engineering agent; sub-agent
+`agents/creative-director.md`; procedure `workflow/00_intake.md`). The user writes a messy idea; you ask ONE round of
+questions with options, research, propose 3 concepts, write `docs/brief.md` + `docs/production_prompt.md`, confirm
+once, then build. One link that installs and starts: `START.md`.
+
 ## Read order (≈15 min, do not skip)
 1. `skills/motion-doc-studio/SKILL.md` — canonical rules and pipeline (**source of truth**; if anything conflicts, it wins).
    Sound: `skills/motion-sound-layer/SKILL.md` (+ its verbatim `PROMPT.md`) → `workflow/10_sound_layer.md`.
@@ -13,6 +19,8 @@ remake or restyle one, follow it.
 3. Watch/inspect `examples/thuluth/` (README + contact.jpg + code) — the quality bar.
 4. Then the `workflow/` file of the step you are on, and the `library/` file of the decision you are making
    (easing_timing, camera_language, transitions, kinetic_typography, color_systems, compositing_fx, fonts).
+   **Any text motion** (lyrics, quotes, captions, kinetic text films) → `library/kinetic_type_motion.md` + `engine/type.js`
+   (motion pairs, kashida tracking, 20 entrances / 12 exits / 14 partner shapes; demo `examples/kinetic_demo/`).
    Look things up in the dictionaries instead of inventing: `library/style_catalog.md` (40 styles),
    `library/motion_recipes.md` (84 moves), `library/gl_transitions.md` (125 transitions), `library/effects_dictionary.md`,
    `library/glossary.md`, `library/shot_cards_index.md` (124 shot cards), `library/icons.md`, `library/patterns.md`.
@@ -25,6 +33,7 @@ remake or restyle one, follow it.
 - Plan → execute → verify. Use the workflow files as checklists.
 - Ask the user only what blocks you (see `workflow/00_intake.md`), with options, in their language.
 - Show a sample before the full build. Push to GitHub after every step. Render in parts.
+- Render fast: `--draft` while iterating, `--workers auto` for finals (`workflow/11_render_speed.md`). Give time estimates.
 - Never claim done without the QA gates in `rules/qa_checklist.md`.
 
 ## Environment assumptions

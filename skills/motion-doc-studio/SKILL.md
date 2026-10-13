@@ -9,11 +9,11 @@ description: >-
   restyled. Works with any coding agent that can run bash, node, python, ffmpeg.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: 2.1.0
   repository: https://github.com/zoih6/motion-doc-studio
 ---
 
-# Motion-Doc Studio — canonical skill (v2.0)
+# Motion-Doc Studio — canonical skill (v2.1)
 
 You are a **director + motion designer + engineer** in one. The film is a *program*: every frame is
 `render(t)`, a pure function of time, drawn on a 1920×1080 canvas, captured by Playwright, encoded by
@@ -31,6 +31,10 @@ real production in `examples/thuluth/` (3:56 Arabic documentary — watch it bef
 STUDIO=$(bash <folder of this SKILL.md>/scripts/studio.sh)   # plugin / clone / ~/.motion-doc-studio; clones it if missing
 "$STUDIO/tools/setup.sh"                                      # ffmpeg, node deps, chromium, uv (idempotent)
 ```
+**New project?** The companion skill **`motion-director`** (`skills/motion-director/`) runs first: the Creative
+Director turns the user's messy idea into `docs/brief.md` + `docs/production_prompt.md` (one question round with
+options, research, 3 concepts, one confirmation). Never make the user write a prompt.
+**Text motion** (lyrics, quotes, captions, text-only films): `library/kinetic_type_motion.md` + `engine/type.js`.
 Sound for any film: the companion skill **`motion-sound-layer`** (`skills/motion-sound-layer/`) runs
 the SOUND LAYER prompt verbatim on top of this engine.
 
@@ -69,6 +73,12 @@ the SOUND LAYER prompt verbatim on top of this engine.
     synthesize hits, clicks or whooshes), cues computed from the picture's own springs (`engine/cues.js`),
     one mix by `sound-layer/scripts/mix.py`, and `qa.py` must pass (0 FAIL) on every delivered file.
     Never edit the vendored scripts or loosen a threshold. A human does the final ear check (`LISTEN.md`).
+14. **Text moves like a pro, never like a slideshow.** Word-level Arabic (never per-letter, never letter-spacing:
+    use kashida), one hero per moment, a partner shape for key words (shape and text never start/end on the same
+    frame), holds with micro-life, exits shorter than entrances, continuous hand-offs instead of cuts
+    (`library/kinetic_type_motion.md` §0). Adapt the grammar to each text's meaning; never copy a reference.
+15. **Render fast, honestly.** Iterate with stills and `render.mjs --draft`; render finals once with `--workers auto`;
+    estimate the time before long renders (`workflow/11_render_speed.md`).
 
 ---
 
@@ -76,7 +86,7 @@ the SOUND LAYER prompt verbatim on top of this engine.
 
 | # | Step | Output | File |
 |---|------|--------|------|
-| 0 | Intake: brief, references, constraints (ask only what blocks you) | `docs/brief.md` | workflow/00_intake.md |
+| 0 | **Creative Director intake** (skill `motion-director`): messy idea → one question round → research → 3 concepts → production prompt → one confirmation | `docs/brief.md`, `docs/production_prompt.md`, `docs/research.md` | workflow/00_intake.md |
 | 1 | Setup repo + env, VO → word timings | `docs/vo_word_timings.json`, `docs/vo_timeline.md` | workflow/01_setup_and_vo.md |
 | 2 | Treatment: core visual metaphor, section map, beat sheet per sentence | `docs/treatment.md`, `docs/shotlist.md` | workflow/02_treatment.md |
 | 3 | Style bible: palette, type, surfaces, light, motion presets, composition grid | `docs/STYLE.md` | workflow/03_style_bible.md |
@@ -86,6 +96,8 @@ the SOUND LAYER prompt verbatim on top of this engine.
 | ♪ | **Sound layer**: cues from code → real CC0 SFX + music → mix.py → qa.py (≤2 fix rounds) → LISTEN.md | `out/final.mp4`, `audio/qa.png`, `LISTEN.md` | workflow/10_sound_layer.md |
 | 7 | Sample → approval → full build → part renders → final mix → release | Release `vX.Y` | workflow/07_render_deliver.md |
 | 8 | GitHub ops, progress doc, cleanup, resume-from-zero | `docs/PROGRESS.md` | workflow/08_github_ops.md |
+| T | **Kinetic text films** (lyrics/quotes/text-only, black stage, any aspect): `new_film.sh --kinetic --aspect 9:16` → motion pairs, kashida | `film/kinetic.html`, `film/scenes/*.js` | library/kinetic_type_motion.md |
+| ⚡ | **Render speed**: draft while iterating, workers for finals, honest estimates | — | workflow/11_render_speed.md |
 | ↺ | **Reference DNA** (whenever the user sends a reference video): measure + describe its grammar, never copy it | `docs/ref_dna/` | workflow/09_reference_dna.md |
 
 ## 2 · Rules (read before designing)
@@ -110,6 +122,9 @@ the SOUND LAYER prompt verbatim on top of this engine.
   - `library/camera_language.md` — 2.5D depth planes, 15 camera moves, shot sizes, composition, multi-aspect.
   - `library/transitions.md` — 17 transitions with when/avoid, in-shot transitions, rhythm recipes, SFX pairing.
   - `library/kinetic_typography.md` — Arabic-safe kinetic type: roles, 8 entrance modes, VO sync, 20 techniques.
+  - **`library/kinetic_type_motion.md` (v2.1)** — the pro kinetic-text system: 10 laws, Hero/Supporting/Accent, motion
+    pairs (text + shape, 2–6 f offsets), 20 entrances / 12 exits / 14 partners → `engine/type.js`, kashida tracking,
+    timing table, transitions, AE/CapCut mapping, creative-adaptation rules. Reference: `examples/reference_dna/kinetic_lyrics/DNA.md`.
   - `library/color_systems.md` — palettes in OKLCH, 60/30/10, perceptual mixing, grading order, 10 palettes.
   - `library/compositing_fx.md` — blend modes, grain/bloom/halation/CA/leaks/LGG grade, 8 finished LOOKS.
   - `library/fonts.md`: 41 bundled OFL families by role, 17 pairings, Arabic type rules for motion.
@@ -125,7 +140,8 @@ the SOUND LAYER prompt verbatim on top of this engine.
   - `library/icons.md`: **1877 Lucide icons** with exact draw-on. `library/patterns.md`: 13 procedural patterns (Islamic geometry + textures).
   - `library/color_systems.md §8`: 20 original heritage palettes + 1000 vendored palettes + Open Color.
   - Visual sheets: `library/specimens/*.jpg`. Vendored originals + licences: `resources/README.md`, `resources/NOTICE.md`.
-- Reference DNA example: `examples/reference_dna/DNA.md` (20 s Arabic app ad → preset F in style_presets).
+- Reference DNA examples: `examples/reference_dna/DNA.md` (20 s Arabic app ad → preset F in style_presets) ·
+  `examples/reference_dna/kinetic_lyrics/DNA.md` (3 Arabic lyric videos → kinetic grammar). Kinetic demo: `examples/kinetic_demo/`.
 
 ## 4 · Engine & tools (runnable)
 ```
@@ -150,13 +166,18 @@ engine/kit/fonts/     41 OFL families + fonts.css + fonts.js (FONT_REGISTRY, fon
 engine/kit/data/      palettes.js · icons_lucide.js · gl_transitions.js (vendored packs as JS globals, file://-safe)
 engine/specimens.html visual browser of all packs (fonts, palettes, icons, patterns, moves, GL transitions)
 engine/index.html     film page template (window.FILM config: palette, fonts, type scale; loads all packs)
+engine/type.js        KINETIC TYPE (KT): word objects, kashida(), stretch(), show() with 20 entrances/12 exits/holds
+                      (drift, wiggle, dim, echo, chroma), group() parenting/flip, partners dot leader comet ring underline
+                      bar line hinge bubble panel orbit streak bokeh, spots()/place(), timeline(), post()
+engine/kinetic.html   kinetic film page (9:16 default; canvas size = aspect) · scenes/kt_demo.js = 10 s template
 engine/cues.js        SOUND LAYER cue registry: when.spring/ease/path → {start, peak, land} frames measured like qa.py;
                       cue.land/move/cut/appear/hero/raw → window.CUES
 engine/scenes/demo.js 16 s demo = template for scene files (bottom: its sound cues)
 tools/setup.sh        ffmpeg + playwright/chromium + uv (idempotent, re-run after resets)
 tools/transcribe.py   VO → word timings (faster-whisper)      tools/find_word.py  word → time lookup
 tools/still.mjs       stills at given times                    tools/cs.sh         contact sheet
-tools/render.mjs      frame-exact render (2 sub-frames → motion blur)
+tools/render.mjs      frame-exact render (2 sub-frames → motion blur) · --draft · --workers N|auto · reads canvas size
+                      (v2.1: 4.8× faster final, 11× draft; workflow/11_render_speed.md)
 tools/render_seg.py   chunked, resumable part render + preview mix
 tools/sound_layer.sh  setup/verify/kit for film/sound-layer (upstream clone @ pinned commit, offline → vendor/)
 tools/export_cues.mjs page → window.CUES (+ audio/sound.json) → audio/cues.json in mix.py --schema format
@@ -174,7 +195,7 @@ tools/build_fonts.py  regenerate kit/fonts/{fonts.css,fonts.js,README.md}     to
 tools/build_docs.mjs  regenerate dictionary tables (moves, GL catalogue, icon index) from code
 tools/specimens.mjs   regenerate library/specimens/*.jpg       tools/selftest.mjs  smoke-test engine + every pack
 ```
-Start a film: `tools/new_film.sh /var/tmp/<film>`. Quick check that everything works: `./tools/setup.sh && node tools/selftest.mjs && cd engine && PAGE=index.html ../tools/cs.sh demo 4 1.5 6.9 10.6 14.5`.
+Start a film: `tools/new_film.sh /var/tmp/<film> [--kinetic] [--aspect 9:16]`. Quick check that everything works: `./tools/setup.sh && node tools/selftest.mjs && cd engine && PAGE=index.html ../tools/cs.sh demo 4 1.5 6.9 10.6 14.5`.
 
 ## 5 · Definition of done
 - Final duration == VO duration (frames = round(dur × fps)).

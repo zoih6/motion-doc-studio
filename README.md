@@ -3,7 +3,7 @@
 **نظام متكامل لصناعة أفلام الموشن جرافيك الوثائقية، مع طبقة صوت احترافية مقاسة، ويعمل مع أي وكيل ذكاء اصطناعي.**
 **A complete, agent-agnostic studio for documentary motion-graphics films, now with a measured SOUND LAYER.**
 
-`Claude Code plugin` · `Codex plugin` · `Gemini CLI extension` · `Agent Skills (npx skills: 70+ agents)` · `MIT` · `v2.0.0`
+`Claude Code plugin` · `Codex plugin` · `Gemini CLI extension` · `Agent Skills (npx skills: 70+ agents)` · `MIT` · `v2.1.0`
 
 <p align="center"><img src="examples/thuluth/poster.jpg" width="720"></p>
 
@@ -12,6 +12,30 @@
 [`examples/demo/demo_16s.mp4`](examples/demo/demo_16s.mp4)
 
 ---
+
+## 🚀 ابدأ مشروعًا جديدًا برسالة واحدة · Start a project with one message (v2.1)
+
+افتح محادثة جديدة مع **أي وكيل** وأرسل هذه الرسالة فقط. سيثبّت النظام إن لم يكن مثبّتًا، ثم يسألك عن فكرتك.
+لا تحتاج لكتابة برومبت: «المخرج الإبداعي» يسألك أسئلة قليلة بخيارات جاهزة، ويبحث ويطوّر الفكرة، ويعيد صياغتها
+كبرومبت احترافي، ويأخذ موافقتك ثم يبدأ العمل.
+Open a new chat with **any agent** and send only this. It installs what's missing, then asks for your idea. No prompt writing needed:
+
+```text
+ابدأ معي مشروع فيديو جديد باتباع هذا الرابط:
+https://raw.githubusercontent.com/zoih6/motion-doc-studio/main/START.md
+```
+```text
+Start a new video project with me by following https://raw.githubusercontent.com/zoih6/motion-doc-studio/main/START.md
+```
+You can add your idea in the same message («…وفكرتي: فيديو عن القهوة اليمنية للانستا»).
+
+**New in v2.1:** 🎬 Creative Director intake agent ([`motion-director`](skills/motion-director/SKILL.md)) · ✍️ pro Arabic
+**kinetic typography** ([`engine/type.js`](engine/type.js), [`library/kinetic_type_motion.md`](library/kinetic_type_motion.md):
+motion pairs, kashida tracking, 20 entrances / 12 exits / 14 partner shapes) · ⚡ **render 4.8× faster** (11× drafts,
+parallel workers: [`workflow/11_render_speed.md`](workflow/11_render_speed.md)) · 9:16 / 1:1 / 4:5 films.
+▶️ Kinetic demo (10 s, 9:16): [`examples/kinetic_demo/kinetic_demo_9x16.mp4`](examples/kinetic_demo/kinetic_demo_9x16.mp4)
+
+<p align="center"><img src="examples/kinetic_demo/contact.jpg" width="820"></p>
 
 ## ⚡ التثبيت برسالة واحدة · One-message install
 
@@ -32,7 +56,7 @@ Install Motion-Doc Studio by following https://raw.githubusercontent.com/zoih6/m
 |---|---|
 | **Any (bash)** | `curl -fsSL https://raw.githubusercontent.com/zoih6/motion-doc-studio/main/install.sh \| bash` |
 | **Claude Code** | `/plugin marketplace add zoih6/motion-doc-studio` → `/plugin install motion-doc-studio@motion-doc-studio` |
-| **70+ agents (skills CLI)** | `npx skills add zoih6/motion-doc-studio` (`-g` global, `-a cursor` one agent, `--skill motion-sound-layer` one skill) |
+| **70+ agents (skills CLI)** | `npx skills add zoih6/motion-doc-studio` (`-g` global, `-a cursor` one agent, `--skill motion-director` one skill) |
 | **Codex CLI** | `codex plugin marketplace add zoih6/motion-doc-studio` → `codex plugin add motion-doc-studio@motion-doc-studio` |
 | **Gemini CLI** | `gemini extensions install https://github.com/zoih6/motion-doc-studio` |
 | **Inside this repo** | `AGENTS.md` (all agents), `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/`, `.github/copilot-instructions.md` |
@@ -42,10 +66,11 @@ Installer options: `MDS_KIT=1` (build the sound library now) · `MDS_PROJECT=$PW
 `MDS_HOME=…` · `MDS_UNINSTALL=1`. Dependencies: git, Node ≥18, Python ≥3.10, ffmpeg, uv. The installer sets them up.
 </details>
 
-## What you get: two skills
+## What you get: three skills
 
 | Skill | Use it for |
 |---|---|
+| [`motion-director`](skills/motion-director/SKILL.md) | **Start here.** Creative Director + prompt engineer: understands a messy/dialect idea, asks ONE round of questions with options (duration, aspect, voice provided/generated, images provided/generated, music, style), researches, proposes 3 concepts, writes `docs/brief.md` + `docs/production_prompt.md`, confirms once, hands off. Sub-agent: [`agents/creative-director.md`](agents/creative-director.md). |
 | [`motion-doc-studio`](skills/motion-doc-studio/SKILL.md) | VOX-style documentary / explainer / reel from a voice-over: brief → word timings → treatment → style bible → real + AI assets → code-driven canvas engine → critique loops → chunked render → GitHub release. Arabic/RTL-first. |
 | [`motion-sound-layer`](skills/motion-sound-layer/SKILL.md) | Sound for any motion video, run **verbatim** from the SOUND LAYER prompt ([`PROMPT.md`](skills/motion-sound-layer/PROMPT.md)): real CC0 recordings, cues computed from the picture's own springs, peak-aligned −14 LUFS mix, `qa.py` decides, a human ear checks 5 timecodes. |
 

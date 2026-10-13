@@ -21,6 +21,12 @@
   code during renders; `node --check` every file before rendering.
 - Segment boundaries must be integer frames (`F0`, `F1` at fps), or audio drifts on concat.
 - Playwright `locator.screenshot` PNG was ~20× slower than `page.screenshot({type:'jpeg'})`. → render.mjs
+- v2.0 launched Chromium with SwiftShader flags → the *2D canvas* was emulated on a software GPU: 329 ms vs 60 ms per frame.
+  v2.1 uses default raster + reads the canvas directly (`toDataURL`). Don't re-add `--use-angle=swiftshader` (use `--gl swiftshader` only if WebGL is missing).
+- Two render workers + x264 at 1080p on a 2 GB machine → out of memory (each x264 ≈ 450 MB with default lookahead). `--workers auto` sizes by RAM.
+- Arabic tracking with `letterSpacing` or per-letter offsets breaks joining → use `KT.kashida()` (tatweel at legal joints, never inside لا).
+- Bokeh/particles over a pure black stage read as dust → only over footage/photos.
+- Word canvases sized from `measureText` can be wider than the frame at hero sizes with kashida → check `W.w` against the safe area.
   uses JPEG q95 piped to ffmpeg.
 - Screenshots are full-range (yuvj420p). → Convert to TV range in the final encode (`scale=in_range=pc:out_range=tv`).
 - Spring overshoot makes radii negative → `Math.max(0, r)`.

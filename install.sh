@@ -6,7 +6,7 @@
 # What it does
 #   1. clones (or fast-forwards) the studio into $MDS_HOME (default ~/.motion-doc-studio)
 #   2. installs dependencies: ffmpeg, uv, node packages, Playwright Chromium   (skip: MDS_DEPS=0)
-#   3. links the skills  motion-doc-studio  +  motion-sound-layer  into every agent skill folder it finds:
+#   3. links the skills  motion-director + motion-doc-studio + motion-sound-layer  into every agent skill folder it finds:
 #        ~/.agents/skills (always: Codex, Gemini CLI, OpenCode, Amp and other Agent-Skills readers)
 #        ~/.claude/skills  ~/.cursor/skills  ~/.copilot/skills  ~/.config/opencode/skills  ~/.windsurf/skills
 #        (only if that agent's folder exists; force a list with MDS_AGENTS="claude cursor …")
@@ -18,7 +18,7 @@
 set -eu
 REPO="${MDS_REPO:-https://github.com/zoih6/motion-doc-studio}"
 H="${MDS_HOME:-$HOME/.motion-doc-studio}"; REF="${MDS_REF:-main}"
-SKILLS="motion-doc-studio motion-sound-layer"
+SKILLS="motion-director motion-doc-studio motion-sound-layer"
 say() { printf '\033[1;33m▸\033[0m %s\n' "$*"; }; ok() { printf '\033[1;32m✓\033[0m %s\n' "$*"; }; warn() { printf '\033[1;31m!\033[0m %s\n' "$*"; }
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
@@ -103,8 +103,8 @@ echo
 cat <<EOF
 
   Studio:  $H        (update: re-run this installer · uninstall: MDS_UNINSTALL=1)
-  Skills:  motion-doc-studio (films) · motion-sound-layer (SFX + music + mix, measured)
-  Restart your agent, then try:
-    "Make a 45-second VOX-style motion-graphics explainer from assets/vo.mp3"
-    "Add real sound effects and music to my motion video and run the sound QA"
+  Skills:  motion-director (START HERE: intake + pro brief) · motion-doc-studio (films + kinetic type) ·
+           motion-sound-layer (SFX + music + mix, measured)
+  Next (agent): read $H/skills/motion-director/SKILL.md and ask the user «ما فكرة الفيديو؟» (START.md, section C).
+  Users: just say "start a new video project" or send https://raw.githubusercontent.com/zoih6/motion-doc-studio/main/START.md
 EOF

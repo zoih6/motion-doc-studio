@@ -14,7 +14,7 @@ SHOTS.push({ a: 20, b: 26, draw: s06, tin: 'gl:directionalwarp', glParams: { dir
 SHOTS.push({ a: 26, b: 31, draw: s07, tin: 'gl:ripple', glEase: 'linear' });
 // direct use anywhere (e.g. a morph inside one shot): g.drawImage(GLT.frame('cube', canvasA, canvasB, k, {persp: .7}), 0, 0)
 ```
-Headless rendering: chromium needs WebGL — `tools/render.mjs`/`still.mjs` launch with `--enable-unsafe-swiftshader --use-angle=swiftshader` (already set). Cost ≈ 15–40 ms per transition frame at 1080p.
+Headless rendering: chromium needs WebGL. Default headless Chromium provides it (v2.1 no longer forces SwiftShader for 2D; if WebGL is missing on your machine run with `RENDER_GL=swiftshader` / `render.mjs --gl swiftshader`). Cost ≈ 15–40 ms per transition frame at 1080p.
 
 ## Curated picks by intent (documentary / explainer)
 

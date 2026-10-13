@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.1.0: Creative Director intake, pro kinetic typography, 5× faster renders (2026-10-13)
+- **Creative Director / prompt engineer** (`skills/motion-director/`, sub-agent `agents/creative-director.md`,
+  `workflow/00_intake.md` rewritten, `templates/brief.md`). It turns a messy idea into a pro brief: understand → ONE question
+  round with options and defaults (duration, aspect, VO provided/generated, images provided/generated, music, style) →
+  research → 3 concepts → `docs/production_prompt.md` → one confirmation → hand-off. **`START.md`**: one link that installs
+  and starts a project. INSTALL step 4 now starts the intake right after installing. The installer links 3 skills.
+- **Kinetic typography system:** `engine/type.js` (`KT`) with word objects, Arabic **kashida** tracking (legal joints,
+  never inside لا), 20 entrances, 12 exits, holds (drift, wiggle, breathe, dim, echo, chroma), `group()` parenting/3D flip,
+  14 motion-pair partners (dot, leader, comet, ring, underline, bar, line, hinge, bubble, panel, orbit, streak, bokeh),
+  spatial `spots()`, `timeline()` and `post()`. `library/kinetic_type_motion.md` merges the user's report (roles, motion pairs, recipes
+  A–D, timing table, easing, AE/CapCut mapping) with frame analysis of 3 reference lyric videos
+  (`examples/reference_dna/kinetic_lyrics/DNA.md`) and creative-adaptation rules. `engine/kinetic.html` page (any aspect), with
+  `scenes/kt_demo.js` as the 10 s template. Demo: `examples/kinetic_demo/` (1080×1920).
+- **Render speed** (`workflow/11_render_speed.md`): Chromium no longer forces 2D canvas through SwiftShader (329 → 60 ms
+  per frame, PSNR 45 dB vs old). `render.mjs` v2 reads the canvas directly and adds `--draft` (1 sub-frame, 960 px,
+  veryfast), `--workers N|auto` (parallel segments, lossless concat, RAM-aware), `--gl`, `--capture`, `--width`, ETA, auto
+  canvas size, tv-range yuv420p output. Measured on 2 vCPU/2 GB: **4.8× faster finals, 11× faster drafts**. `still.mjs`
+  reads the canvas at native size (9:16/1:1 safe).
+- `tools/new_film.sh --kinetic --aspect 9:16|1:1|4:5|16:9`. `selftest` now covers every KT entrance, exit and partner, plus the kashida rules.
+- Docs: SKILL.md (non-negotiables 14–15, pipeline rows T and ⚡), AGENTS/CLAUDE/GEMINI/Cursor/Copilot entry points, pitfalls, gl_transitions.
+
 ## v2.0.0: Sound Layer + installable plugin/skills for every agent (2026-10-13)
 **Breaking:** the canonical skill moved from `SKILL.md` to `skills/motion-doc-studio/SKILL.md`. Old manual copies
 of the repo folder into `~/.claude/skills/` should be replaced by the installer (`install.sh`), which backs them up.

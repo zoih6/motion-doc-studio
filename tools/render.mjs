@@ -2,12 +2,13 @@
 //
 //   PAGE=index.html node ../tools/render.mjs --from 0 --to 20.8 --out out/silent.mp4        (run from the film folder)
 //   … --draft                 fast preview: 1 sub-frame, 960px wide, veryfast x264   (~6-10x faster than final)
-//   … --workers 4             split the range into 4 parallel browser workers, then lossless concat
+//   … --workers 4|auto        split the range into parallel browser workers, then lossless concat (auto = by CPU + RAM)
+//   env: RENDER_WORKERS=auto  RENDER_DRAFT=1  RENDER_GL=swiftshader  (also honoured through tools/render_seg.py)
 //   … --sub 2                 sub-frames per output frame blended (tmix) → natural motion blur (final default 2)
 //   … --gl auto|cpu|swiftshader   raster backend (auto = Chromium default; swiftshader = legacy, ~5x slower)
 //   … --capture canvas|screenshot  canvas = read pixels straight from the page canvas (default, fastest)
 //
-// Why it used to be slow (measured, docs/RENDER_SPEED.md): the old launch flags forced *2D canvas* through
+// Why it used to be slow (measured, workflow/11_render_speed.md): the old launch flags forced *2D canvas* through
 // SwiftShader (a software GPU emulator) → ~330 ms per sub-frame at 1080p. Chromium's normal CPU raster path draws
 // the same frame in ~60 ms (PSNR 43-48 dB vs old = visually identical). Workers then scale with CPU cores.
 import { chromium } from 'playwright';
@@ -20,7 +21,7 @@ import { cpus, totalmem } from 'node:os';
 const argv = process.argv;
 const arg = (k, d) => { const i = argv.indexOf('--' + k); return i > 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
 const flag = (k) => argv.includes('--' + k);
-const DRAFT = flag('draft');
+const DRAFT = flag('draft') || process.env.RENDER_DRAFT === '1';
 const FPS = +arg('fps', 30), FROM = +arg('from', 0), TO = +arg('to', 20.8);
 const SUB = +arg('sub', DRAFT ? 1 : 2);
 const CRF = arg('crf', DRAFT ? '24' : '18');
