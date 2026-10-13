@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.0 — 2026-10-13 «الخط الواحد»
+- NEW engine module `engine/line.js`: one-line films (LINE path + LCAM Hermite camera + BLOOM fills + world-anchored Kinetic-type words; Lucide icons drawn by the pen; LTR digit words + LTR pen reveals).
+- NEW `library/one_line_engine.md`: the five-act grammar (touch → identity → services → care&reveal → contact/outro) + the non-negotiable mechanics, each tied to a real production failure.
+- `rules/pitfalls.md` v3 additions (NaN tf/sample trap, world text spacing, hero frame gate, swoop+sub6, kit rebuild drift, orientation squish…).
+- `rules/qa_checklist.md`: orientation gate, hero-appear gate, one-line gates.
+- `tools/encode_release.sh`: orientation-aware (portrait reels were being squished to 1920×1080 and still passing QA).
+- NEW reference `examples/one_line_reel/`: Lamset Shifa v3 (64.8s one-take reel) — brief, canon scene sources, QA artefacts; `examples/lamset_reel/`: the v2 «رحلة الورقة» reel reference.
+
+
 ## v2.1.0: Creative Director intake, pro kinetic typography, 5× faster renders (2026-10-13)
 - **Creative Director / prompt engineer** (`skills/motion-director/`, sub-agent `agents/creative-director.md`,
   `workflow/00_intake.md` rewritten, `templates/brief.md`). It turns a messy idea into a pro brief: understand → ONE question

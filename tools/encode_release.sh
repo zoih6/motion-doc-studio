@@ -10,8 +10,12 @@ export PATH="$HOME/.local/bin:$PATH"; fail=0
 enc() { ffmpeg -v error -y -i "$IN" -map 0:v -map 0:a -vf "scale=$1:in_range=pc:out_range=tv:flags=lanczos,format=yuv420p" \
   -c:v libx264 -preset slow -crf "$2" -maxrate "$3" -bufsize "$4" -profile:v high -g 60 \
   -colorspace bt709 -color_primaries bt709 -color_trc bt709 -c:a copy -movflags +faststart "$5"; }
-enc 1920:1080 21 3400k 6800k "${O}_1080p.mp4"
-enc 1280:720  23 1700k 3400k "${O}_720p.mp4"
+# orientation-aware targets (reels are portrait, docs are landscape)
+WH=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$IN")
+W0=${WH%,*}; H0=${WH#*,}
+if [ "${H0:-0}" -gt "${W0:-0}" ]; then T1080="1080:-2"; T720="720:-2"; else T1080="1920:1080"; T720="1280:720"; fi
+enc "$T1080" 21 3400k 6800k "${O}_1080p.mp4"
+enc "$T720"  23 1700k 3400k "${O}_720p.mp4"
 cp audio/qa-report.json /tmp/.qa_master.json 2>/dev/null || true; cp audio/qa.png /tmp/.qa_master.png 2>/dev/null || true
 for f in "${O}_1080p.mp4" "${O}_720p.mp4"; do
   n=$(basename "$f" .mp4); r=$(uv run sound-layer/scripts/qa.py "$f" 2>&1) || true

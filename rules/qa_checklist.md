@@ -26,5 +26,8 @@
 - [ ] Described `audio/qa.png` at each hero cue in words; LISTEN.md has 5 timecodes; credits list every sound + music file used.
 - [ ] Spot-check sync at 5 key words across the film (scrub the final file, not the stills).
 - [ ] 1080p ≈ 3.4 Mbps (≈100 MB per 4 min) + 720p version; `+faststart`; plays in a browser.
+- [ ] **Orientation gate**: `ffprobe` every deliverable — reels are 1080×1920, docs are 1920×1080. A squished file can pass qa.py.
+- [ ] Hero-appear gate: every hero cue is a single-frame event (cut/hard bloom + FLASH + impact). Eased heroes fail sound QA.
+- [ ] One-line films: ≥300 world units between scenes' text blocks; pan-sweeps rendered with `--sub 6`; world counters of text (`LINE.S` finite).
 - [ ] Release created with final_1080p.mp4, final_720p.mp4, poster.jpg, contact.jpg; links tested (HTTP 200).
 - [ ] Code/assets/docs pushed; PROGRESS.md has resume instructions; workspace cleaned; tokens deleted.

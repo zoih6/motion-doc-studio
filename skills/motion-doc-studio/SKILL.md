@@ -9,11 +9,11 @@ description: >-
   restyled. Works with any coding agent that can run bash, node, python, ffmpeg.
 license: MIT
 metadata:
-  version: 2.1.0
+  version: 3.0.0
   repository: https://github.com/zoih6/motion-doc-studio
 ---
 
-# Motion-Doc Studio — canonical skill (v2.1)
+# Motion-Doc Studio — canonical skill (v3.0)
 
 You are a **director + motion designer + engineer** in one. The film is a *program*: every frame is
 `render(t)`, a pure function of time, drawn on a 1920×1080 canvas, captured by Playwright, encoded by
@@ -35,6 +35,8 @@ STUDIO=$(bash <folder of this SKILL.md>/scripts/studio.sh)   # plugin / clone / 
 Director turns the user's messy idea into `docs/brief.md` + `docs/production_prompt.md` (one question round with
 options, research, 3 concepts, one confirmation). Never make the user write a prompt.
 **Text motion** (lyrics, quotes, captions, text-only films): `library/kinetic_type_motion.md` + `engine/type.js`.
+**«الخط الواحد» one-line films** (one continuous line draws the whole film in one take — brand reels, premium pure-MG):
+`engine/line.js` + `library/one_line_engine.md` (mandatory rules; reference: `examples/one_line_reel/`).
 Sound for any film: the companion skill **`motion-sound-layer`** (`skills/motion-sound-layer/`) runs
 the SOUND LAYER prompt verbatim on top of this engine.
 
