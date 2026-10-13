@@ -12,12 +12,12 @@ Every new video starts with **`skills/motion-director/SKILL.md`** (the intake an
 questions with options, research, propose 3 concepts, write `docs/brief.md` + `docs/production_prompt.md`, confirm
 once, then build. One link that installs and starts: `START.md`.
 
-## Read order (≈15 min, do not skip)
+## Read order (load on demand; do not reread the entire studio every request)
 1. `skills/motion-doc-studio/SKILL.md` — canonical rules and pipeline (**source of truth**; if anything conflicts, it wins).
    Sound: `skills/motion-sound-layer/SKILL.md` (+ its verbatim `PROMPT.md`) → `workflow/10_sound_layer.md`.
 2. `rules/design_rules.md`, `rules/motion_rules.md`, `rules/pitfalls.md`.
-3. Watch/inspect `examples/thuluth/` (README + contact.jpg + code) — the quality bar.
-4. Then the `workflow/` file of the step you are on, and the `library/` file of the decision you are making
+3. Inspect a small relevant example only if it is already present locally; do not download/watch large example videos by default.
+4. Then read only the `workflow/` file for the current step and the `library/` file for the decision being made
    (easing_timing, camera_language, transitions, kinetic_typography, color_systems, compositing_fx, fonts).
    **Any text motion** (lyrics, quotes, captions, kinetic text films) → `library/kinetic_type_motion.md` + `engine/type.js`
    (motion pairs, kashida tracking, 20 entrances / 12 exits / 14 partner shapes; demo `examples/kinetic_demo/`).
@@ -32,7 +32,8 @@ once, then build. One link that installs and starts: `START.md`.
 ## Operating mode
 - Plan → execute → verify. Use the workflow files as checklists.
 - Ask the user only what blocks you (see `workflow/00_intake.md`), with options, in their language.
-- Show a sample before the full build. Push to GitHub after every step. Render in parts.
+- For ≤30 s, use a contact sheet and a 2–3 s draft instead of a full-length sample; allow one visual fix pass. For longer films, show one 20–30 s sample. Push at meaningful milestones, not after every trivial file change. Render in parts only when the duration/size warrants it.
+- Never clone the studio into the film project or copy the full `examples/` tree. Prefer its installed location or sparse checkout. Keep raw downloads and render intermediates in a job-specific temp directory; never delete user inputs or prior outputs.
 - Render fast: `--draft` while iterating, `--workers auto` for finals (`workflow/11_render_speed.md`). Give time estimates.
 - Never claim done without the QA gates in `rules/qa_checklist.md`.
 

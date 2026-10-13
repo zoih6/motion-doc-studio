@@ -4,13 +4,12 @@
 > `--workers auto`, part renders with `RENDER_WORKERS=auto python3 ../tools/render_seg.py …`. Details + honest
 > estimates: `workflow/11_render_speed.md`.
 
-## Sample (always first)
-- 20–60 s covering the hook + one rich section, in the *final* style, with VO + SOUND LAYER (real SFX + music, qa.py run).
-- Render: `PAGE=index.html VO=tmp/vo.wav SFX=tmp/sfx.wav python3 ../tools/render_seg.py sample 0 <F1>`
-- Upload to the `segments` release (`tools/gh.sh release <owner/repo> segments segments/sample.mp4`),
-  send the link + 3–5 lines on what to look at. Wait for approval/feedback.
-- Feedback → update the style bible + rules for this film, then continue. If the user changes style,
-  redo the sample (v2, v3…) — don't patch the old look.
+## Preview (scale to duration)
+- **≤30 s:** render a contact sheet and one 2–3 s draft preview. Do not render a separate 20–60 s sample or repeat the full film. Continue to the final after the brief's single approval.
+- **>30 s:** make one 20–30 s representative preview (or the requested first section), in the proposed style. The user's approved brief is the approval gate; do not wait for a second approval unless the user explicitly asks to review a sample first.
+- Preview command: `PAGE=index.html node ../tools/render.mjs --from 0 --to 3 --draft --workers 1 --out /var/tmp/motion-doc-studio/<job-id>/preview.mp4`
+- If the user explicitly requested a review sample, upload it to the `segments` release and pause for their feedback. Otherwise continue from the approved brief and share the preview as progress, not as a new approval gate.
+- If the user requested a sample review and gives feedback, update the style bible/rules and rerender only the affected preview. Do not generate repeated sample versions unless the style materially changes.
 
 ## Full build
 - Build sections **in order**, critique each, push each.
@@ -19,12 +18,11 @@
   Full procedure: `workflow/10_sound_layer.md`. (Legacy synth path `cues_auto.py` + `sfx.mjs`: don't use it for hits/clicks/whooshes.)
 
 ## Part renders (crash-safe, workspace-friendly)
-- Split into parts of 30–60 s at integer frames (e.g. 0–2020, 2020–3104 …). Run as a background job
-  that renders → keeps the silent copy outside the workspace → uploads the preview part → deletes local files.
+- Split only longer films into parts of 30–60 s at integer frames. Run a tracked job with a timeout/status log; keep its scratch in a unique `/var/tmp/motion-doc-studio/<job-id>/` directory.
   ```bash
   for s in "p1 0 2020" "p2 2020 3104"; do set -- $s
     PAGE=index.html VO=tmp/vo.wav SFX=tmp/sfx.wav python3 ../tools/render_seg.py $1 $2 $3
-    cp renders/silent_$1.mp4 /var/tmp/silent/ && ../tools/gh.sh release <owner/repo> segments segments/$1.mp4 && rm segments/$1.mp4
+    cp renders/silent_$1.mp4 /var/tmp/motion-doc-studio/<job-id>/ && ../tools/gh.sh release <owner/repo> segments segments/$1.mp4
   done
   ```
 - Speed reference: ~55 s wall time per 6 s chunk at 1080p with 2 sub-frames on 2 vCPU → a 4-min film ≈ 35–40 min.
@@ -49,4 +47,5 @@ commit `audio/cues.json`, `audio/sound.json`, `audio/qa-report.json`, `audio/qa.
 ## Report to the user (their language, short)
 Links (1080p, 720p, release page) · what's in it (one line per section) · what was verified
 (duration, qa.py pass/warn/FAIL + loudness, what qa.png shows at each hero, critique rounds, LISTEN.md timecodes; never "the sound is good") · housekeeping (pushed, cleaned) · next options / question.
+Keep source assets, previews, and prior deliverables. Remove only validated scratch produced by this run, and only from its recorded job directory; never use broad wildcards or delete a local deliverable before the release is verified.
 Optionally drop the 720p file into the workspace and open it in the viewer so they can watch immediately.
