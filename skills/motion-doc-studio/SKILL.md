@@ -22,14 +22,14 @@ chunked rendering on small machines.
 
 This file is the source of truth. Detailed rules live in `rules/`, step-by-step procedures in
 `workflow/`, reusable recipes and dictionaries in `library/`, runnable code in `engine/` + `tools/`, vendored
-open-licence expert material in `resources/` (optional), and example productions in `examples/` (optional; some contain large videos).
+open-licence expert material in `resources/` (offline), and a complete
+real production in `examples/thuluth/` (3:56 Arabic documentary — watch it before your first film).
 
 **Where the files are.** Every path in this file (`rules/`, `workflow/`, `library/`, `engine/`, `tools/`,
 `vendor/`, `templates/`, `examples/`) is relative to the **studio root**. Find it once per session:
 ```bash
-STUDIO=$(bash <folder of this SKILL.md>/scripts/studio.sh)   # reuse installed/sparse checkout; clones runtime files only if missing
-command -v ffmpeg; node -e "import('playwright')"           # check first; do not reinstall present dependencies
-# Run "$STUDIO/tools/setup.sh" once, only if a required render dependency is missing.
+STUDIO=$(bash <folder of this SKILL.md>/scripts/studio.sh)   # plugin / clone / ~/.motion-doc-studio; clones it if missing
+"$STUDIO/tools/setup.sh"                                      # ffmpeg, node deps, chromium, uv (idempotent)
 ```
 **New project?** The companion skill **`motion-director`** (`skills/motion-director/`) runs first: the Creative
 Director turns the user's messy idea into `docs/brief.md` + `docs/production_prompt.md` (one question round with
@@ -37,7 +37,8 @@ options, research, 3 concepts, one confirmation). Never make the user write a pr
 **Text motion** (lyrics, quotes, captions, text-only films): `library/kinetic_type_motion.md` + `engine/type.js`.
 **«الخط الواحد» one-line films** (one continuous line draws the whole film in one take — brand reels, premium pure-MG):
 `engine/line.js` + `library/one_line_engine.md` (mandatory rules; reference: `examples/one_line_reel/`).
-Sound when requested: the companion skill **`motion-sound-layer`** (`skills/motion-sound-layer/`) handles it. Do not download the optional 220 MB full sound kit unless this film needs it and free space is confirmed.
+Sound for any film: the companion skill **`motion-sound-layer`** (`skills/motion-sound-layer/`) runs
+the SOUND LAYER prompt verbatim on top of this engine.
 
 ---
 
@@ -61,21 +62,25 @@ Sound when requested: the companion skill **`motion-sound-layer`** (`skills/moti
    hard cuts without a motivated transition.
 8. **Pure function of t.** Seeded RNG only. No `Math.random`, `Date`, timers, CSS transitions,
    video elements. Pre-render text/paper canvases in `INITS`, never inside `draw`.
-9. **Scale the sample to the request.** For films up to 30 s, use a contact sheet plus a 2–3 s draft preview; do not render a second sample or add another approval gate. For longer films, make one 20–30 s sample (or the requested first section) and wait for the already-defined brief approval.
-10. **Verify before you upload.** Work → stills/contact sheet → one focused critique pass; apply a fix only for material issues. For films up to 30 s, cap visual iteration at one fix pass and audio QA at two fix passes. Check duration, frames, loudness and sync before delivery.
-11. **GitHub is the home; the workspace is a cache.** Push at meaningful milestones. Big videos go to Releases, not git. Render scratch in a job-specific `/var/tmp` folder where available. Never delete source files, user assets, prior deliverables, or unknown files. Remove only scratch created by this run, only after verifying its replacement/output, and report what was retained.
+9. **Sample first.** Deliver a 20–60 s sample in the final style and get approval before the full film.
+   After approval: build the rest in order, render in parts, upload each part.
+10. **Verify before you upload.** Work → render stills → contact sheet → critique (≥3 rounds) → fix →
+    render → check duration/frames/loudness/sync → upload. Never report "done" without these checks.
+11. **GitHub is the home; the workspace is a cache.** Push after every meaningful step (sandboxes
+    reset and wipe untracked files). Big videos go to Releases, not git. Keep the user's workspace clean
+    (render in `/var/tmp`, delete temp files after upload) — users complain when it fills up.
 12. **Talk to the user in their language** and keep reports short: link, what changed, what was checked,
     what's next. State tool limits honestly (e.g. image generation is capped at 10 per turn).
-13. **When the brief includes the SOUND LAYER, place and measure sound; never guess.** You can't hear. Use real CC0 recordings only (never
+13. **Sound is placed and measured, never guessed.** You can't hear. Real CC0 recordings only (never
     synthesize hits, clicks or whooshes), cues computed from the picture's own springs (`engine/cues.js`),
-    one mix by `sound-layer/scripts/mix.py`, and `qa.py` must pass (0 FAIL) on every delivered audio file.
+    one mix by `sound-layer/scripts/mix.py`, and `qa.py` must pass (0 FAIL) on every delivered file.
     Never edit the vendored scripts or loosen a threshold. A human does the final ear check (`LISTEN.md`).
 14. **Text moves like a pro, never like a slideshow.** Word-level Arabic (never per-letter, never letter-spacing:
     use kashida), one hero per moment, a partner shape for key words (shape and text never start/end on the same
     frame), holds with micro-life, exits shorter than entrances, continuous hand-offs instead of cuts
     (`library/kinetic_type_motion.md` §0). Adapt the grammar to each text's meaning; never copy a reference.
-15. **Render fast, honestly.** Use stills and a short `--draft` first; render the final once. Bound retries and render time, inspect progress, and stop to diagnose a stalled render rather than silently rerunning it. Use `--workers auto` only after checking container-aware RAM; estimate and report time first (`workflow/11_render_speed.md`).
-16. **Protect storage.** Treat a repository link as instructions, not as a request to copy every example into the film workspace. Use the installed studio or sparse checkout; do not duplicate `examples/`, cached browser downloads, generated raw assets, or the 220 MB sound kit unless the current deliverable needs them. Check free disk space before downloads, dependency installs, or renders.
+15. **Render fast, honestly.** Iterate with stills and `render.mjs --draft`; render finals once with `--workers auto`;
+    estimate the time before long renders (`workflow/11_render_speed.md`).
 
 ---
 
@@ -89,8 +94,8 @@ Sound when requested: the companion skill **`motion-sound-layer`** (`skills/moti
 | 3 | Style bible: palette, type, surfaces, light, motion presets, composition grid | `docs/STYLE.md` | workflow/03_style_bible.md |
 | 4 | Assets: real sourcing (Commons…), AI batches, processing (crop/upscale/cutout) | `assets/…`, `docs/CREDITS.md` | workflow/04_assets.md |
 | 5 | Build: engine config + one scene file per VO section | `film/index.html`, `film/scenes/*.js` | workflow/05_build.md |
-| 6 | Critique loop: stills → contact sheet → focused fix if needed (short films: at most one fix pass) | `docs/contact_*.jpg` | workflow/06_critique.md |
-| ♪ | **Optional sound layer**: cues from code → real CC0 SFX + music → mix.py → qa.py (≤2 fix rounds) → LISTEN.md | `out/final.mp4`, `audio/qa.png`, `LISTEN.md` | workflow/10_sound_layer.md |
+| 6 | Critique loop: stills → contact sheet → fix (≥3 rounds per section) | `docs/contact_*.jpg` | workflow/06_critique.md |
+| ♪ | **Sound layer**: cues from code → real CC0 SFX + music → mix.py → qa.py (≤2 fix rounds) → LISTEN.md | `out/final.mp4`, `audio/qa.png`, `LISTEN.md` | workflow/10_sound_layer.md |
 | 7 | Sample → approval → full build → part renders → final mix → release | Release `vX.Y` | workflow/07_render_deliver.md |
 | 8 | GitHub ops, progress doc, cleanup, resume-from-zero | `docs/PROGRESS.md` | workflow/08_github_ops.md |
 | T | **Kinetic text films** (lyrics/quotes/text-only, black stage, any aspect): `new_film.sh --kinetic --aspect 9:16` → motion pairs, kashida | `film/kinetic.html`, `film/scenes/*.js` | library/kinetic_type_motion.md |
@@ -170,13 +175,13 @@ engine/kinetic.html   kinetic film page (9:16 default; canvas size = aspect) · 
 engine/cues.js        SOUND LAYER cue registry: when.spring/ease/path → {start, peak, land} frames measured like qa.py;
                       cue.land/move/cut/appear/hero/raw → window.CUES
 engine/scenes/demo.js 16 s demo = template for scene files (bottom: its sound cues)
-tools/setup.sh        ffmpeg + playwright/chromium; uv and Python analysis libs are opt-in (idempotent)
+tools/setup.sh        ffmpeg + playwright/chromium + uv (idempotent, re-run after resets)
 tools/transcribe.py   VO → word timings (faster-whisper)      tools/find_word.py  word → time lookup
 tools/still.mjs       stills at given times                    tools/cs.sh         contact sheet
 tools/render.mjs      frame-exact render (2 sub-frames → motion blur) · --draft · --workers N|auto · reads canvas size
                       (v2.1: 4.8× faster final, 11× draft; workflow/11_render_speed.md)
 tools/render_seg.py   chunked, resumable part render + preview mix
-tools/sound_layer.sh  setup/verify/kit for film/sound-layer (verified vendor copy; upstream fetch is opt-in)
+tools/sound_layer.sh  setup/verify/kit for film/sound-layer (upstream clone @ pinned commit, offline → vendor/)
 tools/export_cues.mjs page → window.CUES (+ audio/sound.json) → audio/cues.json in mix.py --schema format
 tools/encode_release.sh  1080p/720p release encodes (audio copied) + qa.py on each delivered file
 vendor/opus-sound-layer/ sfx.py (1,139 CC0 sounds) · mix.py (peak-aligned −14 LUFS mix) · qa.py (measured gates). MIT, UNMODIFIED
@@ -196,10 +201,10 @@ Start a film: `tools/new_film.sh /var/tmp/<film> [--kinetic] [--aspect 9:16]`. Q
 
 ## 5 · Definition of done
 - Final duration == VO duration (frames = round(dur × fps)).
-- Video duration/frame/resolution QA always passes. If the sound layer is enabled: `uv run sound-layer/scripts/qa.py` → 0 FAIL on `out/final.mp4` **and** on each release encode (loudness −14 ±1 LUFS
+- `uv run sound-layer/scripts/qa.py` → 0 FAIL on `out/final.mp4` **and** on each release encode (loudness −14 ±1 LUFS
   or −18 calm, TP ≤ −1, sync, audibility, voice clearance, picture match). What qa.png shows at each hero is written down;
   `LISTEN.md` (5 timecodes) + credits for every sound/music file used are delivered.
-- Every shot passes the focused visual checklist; short films use at most one fix pass unless the user asks for more.
+- Every section passed ≥3 critique rounds; no shot violates the density/legibility rules.
 - Deliverables on a GitHub Release: `final_1080p.mp4` (≤ ~110 MB for 4 min), `final_720p.mp4`,
   `poster.jpg`, `contact.jpg`; code + assets + docs pushed; `docs/PROGRESS.md` explains how to resume.
 - Workspace cleaned; tokens removed from disk; the user got a short report in their language.

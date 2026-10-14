@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SOUND LAYER setup for a film folder (the folder you render from, e.g. film/).
-#   tools/sound_layer.sh setup  [DIR]   → DIR/sound-layer  (verified vendored copy by default; MDS_SOUND_UPSTREAM=1 opts into upstream clone)
+#   tools/sound_layer.sh setup  [DIR]   → DIR/sound-layer  (git clone upstream @ pinned commit; offline → vendored copy)
 #   tools/sound_layer.sh verify [DIR]   → checksums of DIR/sound-layer vs the pinned release (scripts must stay unmodified)
 #   tools/sound_layer.sh kit    [DIR]   → uv run sound-layer/scripts/sfx.py kit  (1st run ≈ 3–10 min, ~220 MB, CC0)
 #   tools/sound_layer.sh deps           → ffmpeg + uv (idempotent)
@@ -27,10 +27,7 @@ case $cmd in
   deps) deps ;;
   setup)
     if [ ! -d "$D/sound-layer/scripts" ]; then
-      if [ "${MDS_SOUND_UPSTREAM:-0}" != 1 ] && (cd "$S/vendor/opus-sound-layer" && sha256sum -c --quiet ../opus-sound-layer.sha256 2>/dev/null); then
-        cp -r "$S/vendor/opus-sound-layer" "$D/sound-layer"
-        echo "copied verified vendored sound-layer @ ${PIN:0:7} → $D/sound-layer"
-      elif git clone -q "$UP" "$D/sound-layer" 2>/dev/null; then
+      if git clone -q "$UP" "$D/sound-layer" 2>/dev/null; then
         [ -n "$LATEST" ] || git -C "$D/sound-layer" -c advice.detachedHead=false checkout -q "$PIN"
         echo "cloned $UP → $D/sound-layer @ $(git -C "$D/sound-layer" rev-parse --short HEAD)"
       else cp -r "$S/vendor/opus-sound-layer" "$D/sound-layer"; echo "offline: copied vendored sound-layer @ ${PIN:0:7} → $D/sound-layer"; fi

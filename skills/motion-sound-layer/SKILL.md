@@ -19,7 +19,8 @@ You can't hear, so you don't judge sound by taste. You place real recordings fro
 look at every sound (waveform + spectrogram sheets) and let `qa.py` measure the result. A human does
 the final ear check.
 
-**The prompt this skill runs is in [PROMPT.md](PROMPT.md).** Read it first. The full sound kit is optional and must not be built during intake or by default.
+**The prompt this skill runs is in [PROMPT.md](PROMPT.md).** It is canonical and stays verbatim; read it
+first. This file only maps it onto Motion-Doc Studio.
 
 ## 0 · Locate the studio (once per session)
 ```bash
@@ -28,7 +29,9 @@ STUDIO=$(bash <folder of this SKILL.md>/scripts/studio.sh)   # finds or clones z
 ```
 Run every sound command **from the folder you render from** (in a studio film: `film/`), so the
 prompt's relative paths work as written: `sound-layer/`, `audio/`, `video.mp4`, `out/`.
-`setup` reuses an existing copy when present, otherwise copies the checksum-verified vendored pinned scripts (set `MDS_SOUND_UPSTREAM=1` only to explicitly fetch upstream), installs ffmpeg and uv, and verifies checksums. **Never edit `sound-layer/` and never change a
+`setup` runs `git clone https://github.com/Bodila51/opus-sound-layer sound-layer`, checks out the
+pinned, tested commit (`LATEST=1` keeps upstream HEAD), copies the vendored copy if you're offline,
+installs ffmpeg and uv, and verifies checksums. **Never edit `sound-layer/` and never change a
 threshold.** `tools/sound_layer.sh verify film/` proves the scripts are untouched.
 
 ## 1 · CUES: computed from the picture, never typed
@@ -53,7 +56,8 @@ Rules: sound only on real actions. One hero per ~4 s (logo, reveal). Don't put t
 Pan by screen position (±0.6 max).
 
 ## 2 · SOUNDS: real recordings only
-Prefer user-provided audio or licensed sounds already present. The optional `uv run sound-layer/scripts/sfx.py kit` builds 1,139 CC0 sounds in 19 types (~3.5 min, ~220 MB, git-ignored); check free disk first and run it only when broad CC0 selection is needed. For a short silent/music-only film, skip it. If new CC0 effects are specifically requested and space is constrained, use a small curated source/download path or explain the trade-off before creating the full kit.
+`uv run sound-layer/scripts/sfx.py kit` builds 1,139 CC0 sounds in 19 types on the first run (~3.5 min, ~220 MB,
+git-ignored). Run it in the background or with a 10-minute timeout.
 For each type you use, `uv run sound-layer/scripts/sfx.py browse --type paper --like "dry light"` →
 **LOOK at `audio/browse.png`** → put the id in the cue (`"paper/kenney-…"`). Keep one sonic family per film.
 For a missing type, run `sfx.py search "<material action>" --type <type>`, then `sfx.py sheet …` and LOOK. Reject

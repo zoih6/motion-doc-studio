@@ -1,14 +1,14 @@
 # SOUND LAYER prompt (canonical, verbatim)
 
-This is the canonical prompt this skill implements. Use it with the `sound-layer/` scripts, or let the
-`motion-sound-layer` skill run it for you. The full CC0 kit is optional; check need and free space first.
+This is the exact prompt this skill implements. Paste it as-is into any coding agent that has the
+`sound-layer/` scripts, or let the `motion-sound-layer` skill run it for you. Do not paraphrase it.
 
 ```
 SOUND LAYER · Opus 5.5
 You can't hear. Use real recordings, place them from the timeline, look at every sound, and let the QA decide. A human does the final ear check.
 
 SETUP
-Reuse the pinned `sound-layer/` scripts if present; otherwise set them up once. Check free space before downloads.
+git clone https://github.com/Bodila51/opus-sound-layer sound-layer
 Use its scripts (needs ffmpeg and uv). Never rewrite them and never loosen a threshold to make a check pass.
 
 1 CUES
@@ -17,7 +17,7 @@ Sound only on real actions; tag each: cut (full-frame change) · move (frame of 
 One hero per ~4 s (logo, reveal): "thump+tap" with stop_before and build.
 
 2 SOUNDS
-Prefer user-provided audio or licensed recordings already present. Only if new CC0 effects are needed and space is available, run `uv run sound-layer/scripts/sfx.py kit` (1,139 CC0 sounds; about 220 MB). Never synthesize hits, clicks or whooshes; no meme sounds. For silent or music-only work, skip the kit.
+uv run sound-layer/scripts/sfx.py kit (26 CC0 recordings). Never synthesize hits, clicks or whooshes; no meme sounds.
 For a missing type: sfx.py search "<material action>" --type <type>, then sfx.py sheet and LOOK: reject two events in one clip, steady noise, clicks inside a whoosh, clean sine lines on a physical sound.
 Music: my track, or a CC0 loop.
 
@@ -42,7 +42,7 @@ The prompt stays word-for-word. These notes only record what the pinned scripts 
 
 | Topic | This prompt | Upstream `PROMPT.md` @52ac266 | What to do here |
 |---|---|---|---|
-| Kit size | "26 CC0 recordings" | 1,139 CC0 sounds, 19 types | `sfx.py kit` builds **1,139 sounds in 19 types** (≈3.5 min, ≈220 MB). It is optional; check free space and only build it when the chosen deliverable needs broad CC0 selection. If run, give it a 10-minute timeout. |
+| Kit size | "26 CC0 recordings" | 1,139 CC0 sounds, 19 types | `sfx.py kit` now builds **1,139 sounds in 19 types** (measured: ≈3.5 min, ≈220 MB). The count is just a description; the command is the same. The first run downloads everything, so give it a 10-minute timeout or run it in the background. |
 | Hero recipe | `"thump+tap"` + `stop_before` + `build` | `"hit+boom"` + stop_before + build, plus a riser/reverse peaking on it ("thump+tap" for soft) | Default = **thump+tap** (`cue.hero()`). Use hit+boom (+ `cue.raw(id, hero.frame, {sound:'riser'})`) only when the user wants a punchy/trailer film. |
 | Choosing sounds | bare type, or search → sheet → LOOK for a missing type | `sfx.py browse --type T --like "…"`, LOOK at `audio/browse.png`, put the id in the cue; one sonic family per film; `sfx.py add FILE --type T --credit "…"` | Allowed and recommended: `browse` is the LOOK step for sounds already in the kit, and `add` is how a `search` result enters the kit, so mix.py and CREDITS.md know about it. Keep one sonic family per film (e.g. paper + wood for a manuscript film). |
 | `appear` | a tag | a tag | `qa.py` @52ac266 checks it too: a picture change within ±1 frame. The schema text lists only cut/move/land, but the code also checks appear. |

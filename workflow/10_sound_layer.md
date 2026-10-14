@@ -8,13 +8,14 @@
 You can't hear. So you never judge sound by taste. Real recordings are placed from the picture's own
 timing. You look at every sound, `qa.py` decides, and a human does the final ear check.
 
-## 0 · Setup (only when this deliverable needs the sound layer)
+## 0 · Setup (once per film, re-run after a sandbox reset)
 ```bash
 cd film/                                   # everything below runs from the folder with index.html
-../tools/sound_layer.sh setup .            # verified vendored copy → sound-layer/; upstream clone only with MDS_SOUND_UPSTREAM=1
+../tools/sound_layer.sh setup .            # git clone upstream → sound-layer/ @ pinned commit (offline → vendored copy)
                                            # + ffmpeg + uv + checksum verify + .gitignore (sound-layer/, audio/kit/, stems, out/)
+../tools/sound_layer.sh kit .              # = uv run sound-layer/scripts/sfx.py kit   (≈3.5 min, ≈220 MB, 1,139 CC0 sounds / 19 types)
 ```
-Check free disk space before setup. Use a provided soundtrack or already available licensed recordings first. The optional full kit command is `../tools/sound_layer.sh kit .` (≈3.5 min, ≈220 MB, 1,139 CC0 sounds / 19 types); run it only when the brief needs broad sound selection and the user-approved workspace budget allows it. Do not launch it during intake or by default for a short film. Give it a 10-minute timeout. If uv fails with
+Give the kit a 10-minute timeout, or run it in the background while you write cues. If uv fails with
 `invalid peer certificate`, run `export UV_NATIVE_TLS=1`.
 
 ## 1 · Cues: from the picture's own timing, never typed
@@ -75,7 +76,7 @@ uv run sound-layer/scripts/qa.py out/final.mp4
 Long films rendered in parts: concatenate the silent parts first (`concat -c copy`, check frame count).
 mix.py then makes **one** mix for the whole film. Never mix per part.
 
-## 4 · Verify (≤ 2 fix rounds; skip this entire layer when the brief is silent or uses only user-supplied audio)
+## 4 · Verify (≤ 2 fix rounds)
 Fix every FAIL by changing **cues or sounds**. Never touch `sound-layer/`, never raise a threshold, never
 declare a fake `silence_ok`.
 

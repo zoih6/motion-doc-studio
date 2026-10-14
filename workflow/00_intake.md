@@ -40,15 +40,13 @@ Conditional: «الصق النص/الكلمات بالضبط» (kinetic), «اس
 **English template:** Duration? · Aspect? · Voice (mine / generate ★ / none / song) · Images (mine / generate ★ /
 archival / none) · Music (CC0 measured ★ / mine / none) · Style (3 proposals / surprise me).
 
-## 3 · Research and concept scope
-For a short (≤30 s) reel, logo, or text animation with a clear topic/style, do not force broad research or three long concept write-ups. Verify only factual claims that will appear on screen, propose one recommended concept plus up to two brief alternatives when style is genuinely open, and record assumptions. For documentaries or fact-heavy topics, use the full research below.
+## 3 · Research
 Use web search/fetch if the agent has it; otherwise say so. Verify names, dates, numbers and quotes that will
 appear on screen, and gather 3–5 visual references (describe them; never copy). For lyrics, keep the exact text and
 mark the long vowels (kashida candidates) and the emotional key word (the accent colour). Write `docs/research.md`
 with sources.
 
-## 4 · Concepts → pick one
-Use three developed concepts for longer/fact-heavy films or when the brief is creatively ambiguous. For a clear short request, use the one best-fit concept (and at most two one-line alternatives), then continue without another concept-selection round.
+## 4 · Three concepts → pick one
 For each: **title · logline · core visual metaphor · motion persona · style preset · hook (0–2 s) · ending beat**.
 Choose by originality × fit (emotion/platform) × feasibility (assets, tools, time). The metaphor must come from the
 topic's meaning, e.g. the coffee bean's journey as one travelling line that ends as steam writing «موكا».
@@ -69,13 +67,13 @@ SOUND           motion-sound-layer plan (families, hero moments) · music source
 DELIVERABLES    final_1080p.mp4 (+720p), poster.jpg, contact.jpg, GitHub release
 CONSTRAINTS     user's standing rules verbatim · banned list (rules/motion_rules.md, kinetic §10)
 ASSUMPTIONS     what you decided for the user
-SUCCESS         legibility ≥ 34 px · hook ≤ 2 s · focused visual review · applicable QA passes · duration = audio
+SUCCESS         legibility ≥ 34 px · hook ≤ 2 s · ≥ 3 critique rounds · qa.py 0 FAIL · duration = audio
 ```
 
 ## 6 · Confirm, then hand off
 A 6–10 line message in the user's language: title + logline · format · 3–5 structure bullets · style · generated vs
 provided · time estimate (render: `workflow/11_render_speed.md`) · «موافق؟ أو عدّل ما تريد». Wait. Then:
-- documentary / explainer / reel → `tools/new_film.sh <dir> [--aspect 9:16]` → workflow 01 → 08 (≤30 s uses the short-render lane; longer films preview once; no second approval after the approved brief unless requested);
+- documentary / explainer / reel → `tools/new_film.sh <dir> [--aspect 9:16]` → workflow 01 → 08 (sample first);
 - kinetic text / lyrics → `tools/new_film.sh <dir> --kinetic --aspect 9:16` → `library/kinetic_type_motion.md`;
 - sound for any film → `skills/motion-sound-layer`.
 

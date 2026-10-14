@@ -62,16 +62,17 @@ Install Motion-Doc Studio by following https://raw.githubusercontent.com/zoih6/m
 | **Inside this repo** | `AGENTS.md` (all agents), `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/`, `.github/copilot-instructions.md` |
 
 Tested from GitHub on 2026-10-13: `install.sh`, `npx skills add`, Claude Code plugin, Codex plugin and Gemini extension all install, and the skills locate the studio.
-Installer options: `MDS_DEPS=1` (opt into ffmpeg/Playwright/Chromium now; off by default) · with it, `MDS_SOUND=1` installs uv and `MDS_ANALYSIS=1` installs Python analysis tools · `MDS_KIT=1` builds the optional 220 MB sound library · `MDS_PROJECT=$PWD` · `MDS_AGENTS="claude cursor"` · `MDS_HOME=…` · `MDS_UNINSTALL=1`. Intake-only installation downloads runtime folders and links the skills; install render dependencies when a film is ready.
+Installer options: `MDS_KIT=1` (build the sound library now) · `MDS_PROJECT=$PWD` · `MDS_AGENTS="claude cursor"` ·
+`MDS_HOME=…` · `MDS_UNINSTALL=1`. Dependencies: git, Node ≥18, Python ≥3.10, ffmpeg, uv. The installer sets them up.
 </details>
 
 ## What you get: three skills
 
 | Skill | Use it for |
 |---|---|
-| [`motion-director`](skills/motion-director/SKILL.md) | **Start here.** Creative Director + prompt engineer: understands a messy/dialect idea, asks ONE round of questions with options, scales research/concepts to the runtime, writes `docs/brief.md` + `docs/production_prompt.md`, confirms once, hands off. Sub-agent: [`agents/creative-director.md`](agents/creative-director.md). |
+| [`motion-director`](skills/motion-director/SKILL.md) | **Start here.** Creative Director + prompt engineer: understands a messy/dialect idea, asks ONE round of questions with options (duration, aspect, voice provided/generated, images provided/generated, music, style), researches, proposes 3 concepts, writes `docs/brief.md` + `docs/production_prompt.md`, confirms once, hands off. Sub-agent: [`agents/creative-director.md`](agents/creative-director.md). |
 | [`motion-doc-studio`](skills/motion-doc-studio/SKILL.md) | VOX-style documentary / explainer / reel from a voice-over: brief → word timings → treatment → style bible → real + AI assets → code-driven canvas engine → critique loops → chunked render → GitHub release. Arabic/RTL-first. |
-| [`motion-sound-layer`](skills/motion-sound-layer/SKILL.md) | Optional sound layer when requested: real CC0 recordings, cues computed from the picture's own springs, peak-aligned −14 LUFS mix, `qa.py` decides, a human ear checks 5 timecodes. The full sound kit is opt-in. |
+| [`motion-sound-layer`](skills/motion-sound-layer/SKILL.md) | Sound for any motion video, run **verbatim** from the SOUND LAYER prompt ([`PROMPT.md`](skills/motion-sound-layer/PROMPT.md)): real CC0 recordings, cues computed from the picture's own springs, peak-aligned −14 LUFS mix, `qa.py` decides, a human ear checks 5 timecodes. |
 
 ---
 

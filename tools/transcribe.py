@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Word-level VO timings — the film's master clock.
-usage: python3 tools/transcribe.py assets/vo.mp3 docs/vo_word_timings.json [lang=ar] [model=base]
-Needs: pip install faster-whisper only when VO transcription is needed. `base` is the light default; `small`/`medium` improve accuracy but need more download, RAM and time.
+usage: python3 tools/transcribe.py assets/vo.mp3 docs/vo_word_timings.json [lang=ar] [model=medium]
+Needs: pip install faster-whisper  (CPU int8 is fine; ~1× realtime for 'small', slower for 'medium').
 Output: [{s,e,text,words:[{w,s,e}]}] + a readable docs/vo_timeline.md with one line per segment.
 Note: faster-whisper may fail on mp3 paths in some sandboxes → we decode with ffmpeg to float32 first."""
 import sys, json, subprocess, numpy as np
 src, out = sys.argv[1], sys.argv[2]
-lang = sys.argv[3] if len(sys.argv) > 3 else 'ar'; size = sys.argv[4] if len(sys.argv) > 4 else 'base'
+lang = sys.argv[3] if len(sys.argv) > 3 else 'ar'; size = sys.argv[4] if len(sys.argv) > 4 else 'medium'
 pcm = subprocess.run(['ffmpeg', '-v', 'error', '-i', src, '-ac', '1', '-ar', '16000', '-f', 'f32le', '-'], capture_output=True, check=True).stdout
 audio = np.frombuffer(pcm, np.float32)
 from faster_whisper import WhisperModel

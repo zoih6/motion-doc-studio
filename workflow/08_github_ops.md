@@ -22,9 +22,7 @@
   regenerate tmp audio, read PROGRESS.md, check `git log` and the releases to see what was already done
   (you may have done more than your notes say).
 
-## Workspace and storage safety
-- Put scratch in a unique job-specific `/var/tmp/motion-doc-studio/<job-id>/` directory where available; record its path in `docs/PROGRESS.md`.
-- Never delete user-provided inputs, source assets, prior deliverables, or files whose ownership is unclear. Do not run broad `rm -rf` or wildcard cleanup.
-- Remove only files created by this run, only after validating the replacement and confirming the exact path is inside this job's scratch directory. Otherwise retain them and report the disk trade-off.
-- Do not build the full CC0 kit (≈220 MB) or download example videos unless the chosen deliverable explicitly needs them. Do not reinstall already-present dependencies.
-- Keep access tokens outside the repository; remove only the token created for this task after the remote operation is verified.
+## Cleanup (users care a lot)
+- Render scratch lives in `/var/tmp/…`; after upload delete chunks, silent parts, previews, downloads.
+- Keep only what the user asked for in their workspace (e.g. the final 720p for viewing).
+- Delete raw generations once processed assets are pushed. Delete the token file at the end.
