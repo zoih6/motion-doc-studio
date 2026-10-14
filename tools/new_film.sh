@@ -3,8 +3,25 @@
 # → my-film/{film (engine copy), tools, docs (templates), assets/{real,gen}}
 #   --kinetic   text-only / lyric film: film/kinetic.html (engine/type.js) is the page; scene template scenes/kt_demo.js
 #   --aspect    sets the canvas size of index.html + kinetic.html (render.mjs/still.mjs read it automatically)
-set -e; S="$(cd "$(dirname "$0")/.." && pwd)"; D=$1; [ -z "$D" ] && { echo "usage: $0 DEST [--kinetic] [--aspect 9:16]"; exit 1; }
-shift; KIN=0; ASP=""; while [ $# -gt 0 ]; do case "$1" in --kinetic) KIN=1 ;; --aspect) ASP=$2; shift ;; esac; shift; done
+set -e
+S="$(cd "$(dirname "$0")/.." && pwd)"
+usage() { sed -n '2,8p' "$0"; }
+if [ $# -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then usage; exit 0; fi
+D=$1
+case "$D" in --*) echo "destination must be the first argument, not an option: $D" >&2; usage >&2; exit 2 ;; esac
+shift; KIN=0; ASP=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --kinetic) KIN=1 ;;
+    --aspect)
+      [ $# -ge 2 ] || { echo "--aspect requires a value" >&2; exit 2; }
+      ASP=$2; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "unknown option: $1" >&2; usage >&2; exit 2 ;;
+  esac
+  shift
+done
+case "$ASP" in 16:9|9:16|1:1|4:5|"") ;; *) echo "unknown aspect $ASP" >&2; exit 2 ;; esac
 mkdir -p "$D"/{docs,assets/real,assets/gen,film/assets}
 cp -r "$S/engine/." "$D/film/"; rm -rf "$D/film/tmp" "$D/film/segments" "$D/film/renders"
 cp -r "$S/tools" "$D/"; cp "$S/package.json" "$S/.gitignore" "$D/"
@@ -19,7 +36,7 @@ skills/motion-sound-layer (workflow/10_sound_layer.md). Project memory: docs/PRO
 Film page: film/index.html · scenes: film/scenes/*.js (sound cues: cue.* from film/cues.js) · tools: tools/ (run from film/)
 Sound: cd film && ../tools/sound_layer.sh setup . && ../tools/sound_layer.sh kit . → PAGE=index.html node ../tools/export_cues.mjs
 EOT
-case "$ASP" in 16:9) WH="1920 1080" ;; 9:16) WH="1080 1920" ;; 1:1) WH="1080 1080" ;; 4:5) WH="1080 1350" ;; "") WH="" ;; *) echo "unknown aspect $ASP"; exit 1 ;; esac
+case "$ASP" in 16:9) WH="1920 1080" ;; 9:16) WH="1080 1920" ;; 1:1) WH="1080 1080" ;; 4:5) WH="1080 1350" ;; "") WH="" ;; esac
 if [ -n "$WH" ]; then set -- $WH; for f in "$D/film/index.html" "$D/film/kinetic.html"; do
   sed -i.bak -E "s/<canvas id=\"c\" width=\"[0-9]+\" height=\"[0-9]+\">/<canvas id=\"c\" width=\"$1\" height=\"$2\">/" "$f" && rm -f "$f.bak"; done; fi
 PAGE=index.html; [ $KIN = 1 ] && PAGE=kinetic.html

@@ -4,9 +4,14 @@ usage: python3 tools/transcribe.py assets/vo.mp3 docs/vo_word_timings.json [lang
 Needs: pip install faster-whisper  (CPU int8 is fine; ~1× realtime for 'small', slower for 'medium').
 Output: [{s,e,text,words:[{w,s,e}]}] + a readable docs/vo_timeline.md with one line per segment.
 Note: faster-whisper may fail on mp3 paths in some sandboxes → we decode with ffmpeg to float32 first."""
-import sys, json, subprocess, numpy as np
-src, out = sys.argv[1], sys.argv[2]
-lang = sys.argv[3] if len(sys.argv) > 3 else 'ar'; size = sys.argv[4] if len(sys.argv) > 4 else 'medium'
+import argparse, json, subprocess, numpy as np
+ap = argparse.ArgumentParser(description='Create word-level voice-over timings for Motion-Doc Studio.')
+ap.add_argument('src', help='input audio/video file')
+ap.add_argument('out', help='output JSON path')
+ap.add_argument('lang', nargs='?', default='ar', help='Whisper language code (default: ar)')
+ap.add_argument('model', nargs='?', default='medium', help='faster-whisper model size (default: medium)')
+args = ap.parse_args()
+src, out, lang, size = args.src, args.out, args.lang, args.model
 pcm = subprocess.run(['ffmpeg', '-v', 'error', '-i', src, '-ac', '1', '-ar', '16000', '-f', 'f32le', '-'], capture_output=True, check=True).stdout
 audio = np.frombuffer(pcm, np.float32)
 from faster_whisper import WhisperModel

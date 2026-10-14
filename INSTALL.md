@@ -4,7 +4,7 @@
 > order. Run the commands yourself. Ask the user only if a step needs a password or a choice you can't make.
 > Talk to the user in their language. The whole install takes 2–5 minutes, plus ≈3–10 min if you also build the sound kit.
 
-**What you are installing:** `zoih6/motion-doc-studio` v2.1. It has three Agent Skills:
+**What you are installing:** `zoih6/motion-doc-studio` v3.0.0. It has three Agent Skills:
 - `motion-director`: **start here.** The Creative Director / prompt engineer turns the user's messy idea into a pro brief (one question round, research, 3 concepts, one confirmation).
 - `motion-doc-studio`: makes documentary/explainer/reel motion-graphics films and kinetic-text/lyric films (`engine/type.js`) up to a GitHub release.
 - `motion-sound-layer`: adds real CC0 SFX and music placed from the picture's timing, a −14 LUFS mix, and QA gates.
@@ -41,7 +41,7 @@ Alternative (skills only, no dependencies): `npx skills add zoih6/motion-doc-stu
 clone the studio the first time they run, and `tools/setup.sh` installs the dependencies.
 
 ## Step 3: Verify (don't skip it)
-The installer must end with `✓ Motion-Doc Studio v2.x installed`. Confirm with:
+The installer must end with `✓ Motion-Doc Studio v3.x installed`. Confirm with:
 ```bash
 bash ~/.agents/skills/motion-doc-studio/scripts/studio.sh          # prints the studio path
 ls ~/.motion-doc-studio/skills                                       # motion-director  motion-doc-studio  motion-sound-layer

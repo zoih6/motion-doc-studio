@@ -3,7 +3,7 @@
 **نظام متكامل لصناعة أفلام الموشن جرافيك الوثائقية، مع طبقة صوت احترافية مقاسة، ويعمل مع أي وكيل ذكاء اصطناعي.**
 **A complete, agent-agnostic studio for documentary motion-graphics films, now with a measured SOUND LAYER.**
 
-`Claude Code plugin` · `Codex plugin` · `Gemini CLI extension` · `Agent Skills (npx skills: 70+ agents)` · `MIT` · `v2.1.0`
+`Claude Code plugin` · `Codex plugin` · `Gemini CLI extension` · `Agent Skills (npx skills: 70+ agents)` · `MIT` · `v3.0.0`
 
 <p align="center"><img src="examples/thuluth/poster.jpg" width="720"></p>
 
@@ -13,7 +13,7 @@
 
 ---
 
-## 🚀 ابدأ مشروعًا جديدًا برسالة واحدة · Start a project with one message (v2.1)
+## 🚀 ابدأ مشروعًا جديدًا برسالة واحدة · Start a project with one message (v3.0)
 
 افتح محادثة جديدة مع **أي وكيل** وأرسل هذه الرسالة فقط. سيثبّت النظام إن لم يكن مثبّتًا، ثم يسألك عن فكرتك.
 لا تحتاج لكتابة برومبت: «المخرج الإبداعي» يسألك أسئلة قليلة بخيارات جاهزة، ويبحث ويطوّر الفكرة، ويعيد صياغتها
@@ -29,7 +29,7 @@ Start a new video project with me by following https://raw.githubusercontent.com
 ```
 You can add your idea in the same message («…وفكرتي: فيديو عن القهوة اليمنية للانستا»).
 
-**New in v2.1:** 🎬 Creative Director intake agent ([`motion-director`](skills/motion-director/SKILL.md)) · ✍️ pro Arabic
+**New in v3.0:** ➰ one-line engine and orientation-safe release encodes · 🎬 Creative Director intake agent ([`motion-director`](skills/motion-director/SKILL.md)) · ✍️ pro Arabic
 **kinetic typography** ([`engine/type.js`](engine/type.js), [`library/kinetic_type_motion.md`](library/kinetic_type_motion.md):
 motion pairs, kashida tracking, 20 entrances / 12 exits / 14 partner shapes) · ⚡ **render 4.8× faster** (11× drafts,
 parallel workers: [`workflow/11_render_speed.md`](workflow/11_render_speed.md)) · 9:16 / 1:1 / 4:5 films.
@@ -182,7 +182,7 @@ cd engine && PAGE=index.html node ../tools/export_cues.mjs           # 13 cues c
 Start a film: `tools/new_film.sh /var/tmp/my-film`. Full sound walkthrough: [`examples/demo/sound/README.md`](examples/demo/sound/README.md).
 
 ### Versions
-v2.0 sound layer + plugin/skills packaging · v1.2 embedded dictionaries & packs · v1.1 pro layer · v1.0 first release. See [CHANGELOG.md](CHANGELOG.md).
+v3.0 one-line engine + orientation-safe releases · v2.1 Creative Director, kinetic typography and faster renders · v2.0 sound layer + plugin/skills packaging · v1.2 embedded dictionaries & packs · v1.1 pro layer · v1.0 first release. See [CHANGELOG.md](CHANGELOG.md).
 
 ### Credits & licence
 - Code: MIT. Fonts: SIL OFL 1.1 (41 families, `engine/kit/fonts/README.md`).
