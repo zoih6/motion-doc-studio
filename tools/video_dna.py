@@ -7,7 +7,7 @@ flash / strobe frames, camera motion (median optical flow, needs opencv), shot l
 palette (k-means, % coverage, OKLCH lightness), loudness (EBU R128), VO/music balance, audio onsets.
 Then YOU watch the sheets and fill the qualitative half (type, layout, characters, graphic vocabulary)
 using workflow/09_reference_dna.md."""
-import sys, os, json, subprocess, argparse, math
+import sys, os, json, subprocess, argparse, math, shlex
 import numpy as np
 from PIL import Image
 
@@ -16,9 +16,11 @@ ap.add_argument('--fps-sheet', type=float, default=4); ap.add_argument('--colors
 ap.add_argument('--cut', type=float, default=60, help='mean abs diff (0-255) that counts as a hard cut')
 a = ap.parse_args(); os.makedirs(a.out, exist_ok=True); O = lambda f: os.path.join(a.out, f)
 sh = lambda c: subprocess.run(c, shell=True, capture_output=True, text=True)
+SRC = shlex.quote(os.path.abspath(a.src))
+Q = lambda p: shlex.quote(os.path.abspath(p))
 
 # ── format ──
-pr = json.loads(sh(f'ffprobe -v error -show_streams -show_format -of json "{a.src}"').stdout)
+pr = json.loads(sh(f'ffprobe -v error -show_streams -show_format -of json {SRC}').stdout)
 v = next(s for s in pr['streams'] if s['codec_type'] == 'video'); has_audio = any(s['codec_type'] == 'audio' for s in pr['streams'])
 Wv, Hv = int(v['width']), int(v['height']); num, den = map(int, v['r_frame_rate'].split('/')); FPS = num / den; DUR = float(pr['format']['duration'])
 
@@ -79,7 +81,7 @@ palette = [{'hex': '#%02x%02x%02x' % tuple(int(x) for x in c), 'pct': round(100 
 # ── audio ──
 audio = {}
 if has_audio:
-    e = sh(f'ffmpeg -nostats -i "{a.src}" -af ebur128=peak=true -f null - 2>&1').stdout + sh(f'ffmpeg -nostats -i "{a.src}" -af ebur128=peak=true -f null - 2>&1').stderr
+    e = sh(f'ffmpeg -nostats -i {SRC} -af ebur128=peak=true -f null - 2>&1').stdout + sh(f'ffmpeg -nostats -i {SRC} -af ebur128=peak=true -f null - 2>&1').stderr
     import re
     I = re.findall(r'I:\s+(-?[\d.]+) LUFS', e); LRA = re.findall(r'LRA:\s+([\d.]+) LU', e); TP = re.findall(r'Peak:\s+(-?[\d.]+) dBFS', e)
     audio = {'lufs': float(I[-1]) if I else None, 'lra': float(LRA[-1]) if LRA else None, 'true_peak': float(TP[-1]) if TP else None}
@@ -99,11 +101,11 @@ crop = f'crop={act_w:.0f}:{act_h:.0f}:{x0 * Wv / SW:.0f}:{y0 * Hv / SH:.0f}'
 n_sheet = int(DUR * a.fps_sheet); per = 42
 for k in range(0, n_sheet, per):
     t0 = k / a.fps_sheet; t1 = min(DUR, (k + per) / a.fps_sheet)
-    sh(f'ffmpeg -v error -y -ss {t0} -t {t1 - t0} -i "{a.src}" -vf "{crop},fps={a.fps_sheet},scale=320:-2,drawtext=text=\'%{{pts\\:flt}}\':x=4:y=4:fontsize=13:fontcolor=yellow:box=1:boxcolor=black@0.6,tile=6x7:padding=3" -frames:v 1 -q:v 4 "{O(f"contact_{t0:05.1f}s.jpg")}"')
+    sh(f'ffmpeg -v error -y -ss {t0} -t {t1 - t0} -i {SRC} -vf "{crop},fps={a.fps_sheet},scale=320:-2,drawtext=text=\'%{{pts\\:flt}}\':x=4:y=4:fontsize=13:fontcolor=yellow:box=1:boxcolor=black@0.6,tile=6x7:padding=3" -frames:v 1 -q:v 4 {Q(O(f"contact_{t0:05.1f}s.jpg"))}')
 mids = [(bounds[i] + bounds[i + 1]) / 2 for i in range(len(bounds) - 1)]
 tmp = O('_k'); os.makedirs(tmp, exist_ok=True)
-for j, t in enumerate(mids): sh(f'ffmpeg -v error -y -ss {t:.3f} -i "{a.src}" -frames:v 1 -vf "{crop},scale=480:-2" "{tmp}/k{j:03d}.png"')
-cols_ = min(4, max(1, len(mids))); sh(f'ffmpeg -v error -y -pattern_type glob -i "{tmp}/k*.png" -vf "tile={cols_}x{math.ceil(len(mids) / cols_)}:padding=4" -frames:v 1 -q:v 3 "{O("shots.jpg")}"')
+for j, t in enumerate(mids): sh(f'ffmpeg -v error -y -ss {t:.3f} -i {SRC} -frames:v 1 -vf "{crop},scale=480:-2" {Q(os.path.join(tmp, f"k{j:03d}.png"))}')
+cols_ = min(4, max(1, len(mids))); sh(f'ffmpeg -v error -y -pattern_type glob -i {Q(tmp)}/k*.png -vf "tile={cols_}x{math.ceil(len(mids) / cols_)}:padding=4" -frames:v 1 -q:v 3 {Q(O("shots.jpg"))}')
 for f_ in os.listdir(tmp): os.remove(os.path.join(tmp, f_))
 os.rmdir(tmp)
 
